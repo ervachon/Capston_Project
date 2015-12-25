@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Coursera Data Science Specialization</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Coursera Data Science Specialization">
+  <meta name="author" content="Eric VACHON">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="libraries/widgets/bootstrap/css/bootstrap.css"></link>
+<link rel=stylesheet href="libraries/widgets/quiz/css/demo.css"></link>
+<link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <aside class="gdbar">
+    <img src="assets/img/logo.jpg">
+  </aside>
+  <hgroup class="auto-fadein">
+    <h1>Coursera Data Science Specialization</h1>
+    <h2>Predict next Word</h2>
+    <p>Eric VACHON<br/>December 2015</p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <article data-timings="">
+    <!--
+https://support.rstudio.com/hc/en-us/articles/205002917-SSL-certificate-problem-when-publishing-to-RPubs
+file.edit('~/.Rprofile') **<--options(rpubs.upload.method = "internal")**
+library(slidify)
+setwd("D:\\_MOOC_\\git\\Capston_Project")
+publish(title = 'Coursera Capston Project', 'index.html', host = 'rpubs') 
+-->
+
+<h2>Aim of the capston project.</h2>
+
+<p><br>
+The aim of this project is to use 3 dataset from .... to create a algorithm to predict the next word of a sentence.<br>
+<br>
+This project is the capston project of the coursera data science specialisation.<br>
+<br></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Download, load and summary the data source.</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>The data source :</p>
+
+<ul>
+<li>en_US.blogs.txt (210160014 bytes,  899288 lines)</li>
+<li>en_US.news.txt (205811889 bytes, 1010242 lines)</li>
+<li>en_US.twitter.txt (167105338 bytes, 2360148 lines)<br>
+&gt; head en_US.twitter.txt &gt; head.twitter.txt :<br></li>
+</ul>
+
+<pre><code class="r">t &lt;- file(&quot;head.twitter.txt&quot;); open(t)
+while (length(line &lt;- readLines(t, n = 1, warn = FALSE)) &gt; 0) {print (line)} 
+</code></pre>
+
+<pre><code>## [1] &quot;How are you? Btw thanks for the RT. You gonna be in DC anytime soon? Love to see you. Been way, way too long.&quot;
+## [1] &quot;When you meet someone special... you&#39;ll know. Your heart will beat more rapidly and you&#39;ll smile for no reason.&quot;
+## [1] &quot;they&#39;ve decided its more fun if I don&#39;t.&quot;
+## [1] &quot;So Tired D; Played Lazer Tag &amp; Ran A LOT D; Ughh Going To Sleep Like In 5 Minutes ;)&quot;
+## [1] &quot;Words from a complete stranger! Made my birthday even better :)&quot;
+</code></pre>
+
+<pre><code class="r">close(t) 
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Clean data.</h2>
+  </hgroup>
+  <article data-timings="">
+    <ol>
+<li>Load data</li>
+<li>lower case the data</li>
+<li>Remove 
+a. whitespace
+b. sign</li>
+<li>tokenize<br></li>
+</ol>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Algorithms.</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>use n-gram / backoff model</p>
+
+<p>2-gram
+3-gram</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Shiny app.</h2>
+  </hgroup>
+  <article data-timings="">
+    
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Links</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><a href="https://ervachon.shinyapps.io/Capston_Project">My Shiny App will be here</a><br></li>
+<li><a href="https://github.com/ervachon/Capston_Project">My Github</a><br></li>
+<li><a href="https://class.coursera.org/dsscapstone-006">Coursera link</a></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='NA'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='Download, load and summary the data source.'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Clean data.'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Algorithms.'>
+         4
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=5 title='Shiny app.'>
+         5
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=6 title='Links'>
+         6
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  <script src="libraries/widgets/bootstrap/js/bootstrap.min.js"></script>
+<script src="libraries/widgets/bootstrap/js/bootbox.min.js"></script>
+<script src="libraries/widgets/quiz/js/jquery.quiz.js"></script>
+<script src="libraries/widgets/quiz/js/mustache.min.js"></script>
+<script src="libraries/widgets/quiz/js/quiz-app.js"></script>
+
+  <script>  
+  $(function (){ 
+    $("#example").popover(); 
+    $("[rel='tooltip']").tooltip(); 
+  });  
+  </script>  
+  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
