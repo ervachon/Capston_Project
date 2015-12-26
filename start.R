@@ -18,6 +18,10 @@ close(t)
 
 max
 
+
+
+
+
 en_US <-  file("D:/_MOOC_/_coursera_/10 project/final/en_US/en_US.news.txt")
 open(en_US);
 current.line <- 1
