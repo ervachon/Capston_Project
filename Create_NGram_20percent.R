@@ -20,7 +20,9 @@ library(slam) #slam::row_sums
 listFiles = c('en_US.twitter.txt','en_US.news.txt','en_US.blogs.txt')
 directory = "D:\\_MOOC_\\_coursera_\\10 project\\final\\en_US\\"
 setwd('D:\\_MOOC_\\git\\Capston_Project\\data.tmp')
-nbLinesLoad = 50000
+
+nbLinesLoad   <- 50000
+percentSample <- 20
 
 nGramMatrix <- function (y,n) { 
   print(Sys.time())
@@ -28,14 +30,15 @@ nGramMatrix <- function (y,n) {
   TermDocumentMatrix(y, control = list(tokenize = function(x) NGramTokenizer(x, Weka_control(min = n, max = n))))
 }
 
-#sample the twitt...
 
 for (i in 1:length(listFiles))
 {
     print(paste(Sys.time(),listFiles[i],sep=" > "))
     myFile <- paste(directory,listFiles[i],sep="")
     f  <- readLines(myFile, n = -1L, ok = TRUE, warn = FALSE,  skipNul = FALSE)
-    
+
+    f <- sample(f,length(f)*percentSample/100)
+
     # Remove non print data etc
     f <- iconv(f, "latin1", "ASCII", sub=" ");
     f <- gsub("[^[:alpha:][:space:][:punct:]]", "", f);
@@ -44,7 +47,7 @@ for (i in 1:length(listFiles))
       
       print(paste(">",format(j,  scientific = F),"-",format(min(j+nbLinesLoad,length(f)), scientific = F), sep= "" ))
       print(paste(Sys.time(),"VCorpus ",sep=" > "))
-      fCorpus <- VCorpus(<(f[j:min(j+nbLinesLoad,length(f))]))
+      fCorpus <- VCorpus(VectorSource(f[j:min(j+nbLinesLoad,length(f))]))
       
       print(paste(Sys.time(),"tm_map_lower",sep=" > "))
       fCorpus <- tm_map(fCorpus, content_transformer(tolower))
@@ -84,7 +87,7 @@ for (i in 1:length(listFiles))
       print(paste(Sys.time(),"wordcloud",sep=" > "))
       pal = brewer.pal(9,"BuPu")
       wordcloud(words = w1$terms,freq = w1$freq,scale = c(3,.8),
-                random.order = F,colors = pal,max.words=20)
+                random.order = F,colors = pal,max.words=60)
       
       print(paste(Sys.time(),"save",sep=" > "))
       save(t1, file=paste("t1_",listFiles[i],"_", format(j, scientific = F ),".RData", sep=""))
