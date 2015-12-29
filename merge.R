@@ -7,7 +7,7 @@
 #install.packages("foreach")
 
 #setwd('D:\\_MOOC_\\git\\Capston_Project\\')
-#source('Create_NGram_100percent_complet.R')
+#source('merge.R')
 print(paste(Sys.time(),"> DEBUT"))
 
 # attention 64bit : jre dans c:\\programmes et non x86
@@ -24,6 +24,7 @@ library(foreach)
 library(doParallel)
 
 no_cores <- detectCores() - 1
+#no_cores <- 2
 registerDoParallel(no_cores)
 
 listFiles = c('en_US.news.txt','en_US.blogs.txt','en_US.twitter.txt')
@@ -39,24 +40,47 @@ mergeW <- function(w1,w2){
       wTmp <- w1
     } else
     { 
-      wTmp <- rbind(w1,w2)
-      wTmp <- aggregate(wTmp$freq,list(wTmp$terms),sum) 
-      colnames(wTmp) <- c('terms','freq')
+      w1 <- w1[order(w1$terms),]
+      w2 <- w2[order(w2$terms),]
+      w1$freq[w1$terms %in% w2$terms] <- w1$freq[w1$terms %in% w2$terms] + w2$freq[w2$terms %in% w1$terms]
+      wTmp <- rbind(w1, w2[!(w2$terms %in% w1$terms),])
+      #wTmp <- rbind(w1,w2)
+      #wTmp <- aggregate(wTmp$freq,list(wTmp$terms),sum) 
+      #colnames(wTmp) <- c('terms','freq')
+      #sort dataframe
     }
   wTmp
 }
 
-print(paste(Sys.time(),"merge",sep=" > "))
-for (i in 1:nbGram){
+tmp <- foreach (i=1:nbGram, .packages=c('tm','RWeka','slam','data.table')) %dopar% { 
+#for (i in 1:nbGram){
+  setwd('D:\\_MOOC_\\git\\Capston_Project\\data.tmp')
+  print(paste(Sys.time(),i,sep=" > "))
   wF <- data.frame()
-  for (j in 1:length(listFiles)){
-    load(paste(directoryLoad,"w",i,"_",listFiles[j],".RData", sep=""))
+  files <- list.files(pattern = paste('^w',i,'.*RData$',sep=''))
+  for (j in files){
+    load(paste(directoryLoad,j,sep=''))
+    print(paste('>',j))
     w  <- as.data.frame(w)
     wF <- mergeW(wF,w)
+    rm(w)
+    gc()
   }
   #sort wF ?
-  print(paste(Sys.time(),i,sep=" > "))
+  wF <- wF[order(-wF$freq,wF$terms),]
   save(wF, file=paste(directorySave,"w",i,".RData", sep=""))
+  rm(wF)
+  gc()
 } 
+
+#pal = brewer.pal(9,"BuPu")
+#wordcloud(words = wF$terms,
+#          freq = wF$freq,
+#          scale=c(5,0.5), 
+#          max.words=100, 
+#          random.order=FALSE, 
+#          rot.per=0.35, 
+#          use.r.layout=FALSE, 
+#          colors=brewer.pal(8,"Dark2"))
 
 print(paste(Sys.time(),"end",sep=" > "))

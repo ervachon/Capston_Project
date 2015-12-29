@@ -1,5 +1,5 @@
 #setwd('D:\\_MOOC_\\git\\Capston_Project\\')
-#source('02.R')
+#source('predict.R')
 
 library(rJava)
 library(NLP)
@@ -10,7 +10,7 @@ library(wordcloud)
 library(slam) #slam::row_sums
 
 predict <- function(laPhrase,n) {
-  
+  #clean the sentence and take the n last words  
   # splitStr = strsplit(trimws(laPhrase)," ")
   laPhrase <- iconv(laPhrase, "latin1", "ASCII", sub=" ");
   laPhrase <- gsub("[^[:alpha:][:space:][:punct:]]", "", laPhrase)
@@ -34,22 +34,16 @@ predict <- function(laPhrase,n) {
   tmp
 }
 
+directory <- 'D:\\_MOOC_\\git\\Capston_Project\\'
+dataDirectory <- paste(directory,'data\\', sep='')
+nbGram <- 4
 
-load("1_gram.RData")
-load("2_gram.RData")
-load("3_gram.RData")
-load("4_gram.RData")
-
-w <- vector(mode="list", length=length(listFiles))
-w[1] <- w1
-w[2] <- w2
-w[3] <- w3
-w[4] <- w4
-
-rm(w1)
-rm(w2)
-rm(w3)
-rm(w4)
+wListe <- vector(mode="list", length=length(listFiles))
+for (i in 1:nbGram){
+  load(paste(dataDirectory,"w",i,".RData",sep=""))  
+  wListe[i] <- wF
+  rm(wF)
+}
 
 quizz <- c("The guy in front of me just bought a pound of bacon, a bouquet, and a case of",
            "You're the reason why I smile everyday. Can you follow me please? It would mean the",
