@@ -22,11 +22,13 @@ library(slam) #slam::row_sums
 library(parallel)
 library(foreach)
 library(doParallel)
-#no_cores <- detectCores() - 3
-registerDoParallel(2)
+
+no_cores <- detectCores() - 1
+registerDoParallel(no_cores)
 
 listFiles = c('en_US.news.txt','en_US.blogs.txt','en_US.twitter.txt')
-directory = "D:\\_MOOC_\\_coursera_\\10 project\\final\\en_US\\"
+directoryLoad = "D:\\_MOOC_\\git\\Capston_Project\\data.tmp\\"
+directorySave = "D:\\_MOOC_\\git\\Capston_Project\\data\\"
 nbGram <- 4
 
 mergeW <- function(w1,w2){
@@ -44,20 +46,17 @@ mergeW <- function(w1,w2){
   wTmp
 }
 
-
 print(paste(Sys.time(),"merge",sep=" > "))
 for (i in 1:nbGram){
-  #tmp <- foreach (i=1:nbGram) %dopar% { 
   wF <- data.frame()
   for (j in 1:length(listFiles)){
-    setwd('D:\\_MOOC_\\git\\Capston_Project\\data.tmp\\')
-    load(paste("w",i,"_",listFiles[j],".RData", sep=""))
+    load(paste(directoryLoad,"w",i,"_",listFiles[j],".RData", sep=""))
     w  <- as.data.frame(w)
     wF <- mergeW(wF,w)
   }
-  #sort wF
+  #sort wF ?
   print(paste(Sys.time(),i,sep=" > "))
-  save(wF, file=paste("w",i,".RData", sep=""))
+  save(wF, file=paste(directorySave,"w",i,".RData", sep=""))
 } 
 
 print(paste(Sys.time(),"end",sep=" > "))
