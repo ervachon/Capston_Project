@@ -30,7 +30,9 @@ predict <- function(laPhrase,n) {
   #split avec espace les n derniers
   tmp <- tail(tmp[[1]],n)
   tmp <- paste(tmp, collapse = ' ')
-  #w4[grep(paste("^",tmp," "), w4$terms), ] 
+  #a<-"me about this"
+  #wF[grep(paste("^",a," ",sep=""), wF$terms), ] [1:10,]
+  #nrow(wF[wF$freq>1,])
   tmp
 }
 
@@ -62,5 +64,5 @@ predict(quizz(0))
 
 
 
-
+#setkeyv ???
 

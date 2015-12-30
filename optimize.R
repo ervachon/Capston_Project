@@ -1,21 +1,19 @@
 #setwd('D:\\_MOOC_\\git\\Capston_Project\\')
 #source('optimize.R')
 
-library(rJava)
-library(NLP)
-library(RWeka)
-library(tm)
-library(data.table)
-library(wordcloud)
-library(slam) #slam::row_sums
-
-minOcc <- c(100,30,20,10)
+minOcc <- c(1,3,4,4)
 directory = "D:\\_MOOC_\\git\\Capston_Project\\data\\"
 nbGram <- 4
 
+wListe <- vector(mode="list", length=nbGram)
 for (i in 1:nbGram){
   load(paste(directory,"w",i,".RData",sep=""))
   #optimize the size  
-  
-  save(paste(directory,"w",i,"_opt.RData",sep=""))  
+  w <- wF[wF$freq>minOcc[i],]
+  rownames(w) <- 1:nrow(w)
+  wListe[[i]] <- w
+  #save(w,file=paste(directory,"w",i,"_opt_",minOcc[i],".RData",sep=""))  
 }
+
+save(w,file=paste(directory,"wListe_",paste(minOcc, collapse = ''),".RData",sep=""))  
+
