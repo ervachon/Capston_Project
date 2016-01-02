@@ -8,9 +8,15 @@ output: html_document
 https://support.rstudio.com/hc/en-us/articles/205002917-SSL-certificate-problem-when-publishing-to-RPubs
 file.edit('~/.Rprofile') **<--options(rpubs.upload.method = "internal")**
 library(slidify)
-setwd("D:\\_MOOC_\\git\\Capston_Project")
+setwd("D:\\_GIT_\\Capston_Project")
 publish(title = 'Coursera Capston Project', 'index.html', host = 'rpubs') 
-setwd('D:\\_MOOC_\\git\\Capston_Project')
+setwd('D:\\_GIT_\\Capston_Project')
+
+ggplot(freq3_top40, aes(x = term, y = frequency)) + 
+    geom_bar(fill="dark red", stat = "identity") + 
+    xlab("Term") + ylab("Count") + ggtitle("40 the most frequent 3-grams") + 
+    coord_flip()
+    
 -->
 
 <img src="logo.jpg">
@@ -67,42 +73,20 @@ At the end if we didnt find a ngram we take the top 1 of the unigram corpus.
 
 Here it is a summary (wordcloud and distribution) of the n-gramization of our corpus:  
 * unigram (1-gram) : 737 895 unigrams  
-![alt text](1gram.png) 
-![alt text](1gram_dist.png) 
+<img src="./images/1gram.png" width="400" height="400" />
+<img src="./images/1gram_dist.png" width="400" height="400" />
 
 * bigram (2-gram) : 10 447 425  bigrams  
-![alt text](2gram.png) 
-![alt text](2gram_dist.png) 
+<img src="./images/2gram.png" width="400" height="400" />
+<img src="./images/2gram_dist.png" width="400" height="400" />
 
 * trigram (3-gram) : 31 477 015 trigrams  
-![alt text](3gram.png) 
-![alt text](3gram_dist.png) 
+<img src="./images/3gram.png" width="400" height="400" />
+<img src="./images/3gram_dist.png" width="400" height="400" />
 
 * quadrigram (4-gram) : 47 183 410 quadrigrams  
-![alt text](4gram.png) 
-![alt text](4gram_dist.png) 
-
-<!--
-library(wordcloud)
-pal = brewer.pal(9,"BuPu")
-wordcloud(words = wF$terms,
-          freq = wF$freq,
-          scale=c(5,0.5), 
-          max.words=50, 
-          random.order=FALSE, 
-          rot.per=0.35, 
-          use.r.layout=FALSE, 
-          colors=brewer.pal(8,"Dark2"))
-
-load('D:\\_MOOC_\\git\\Capston_Project\\data\\w3.RData'))
-a<- wF[1:50,]
-rownames(a) <- 1:nrow(a)
-a$terms <- factor(a$terms, levels = a$terms[order(a$freq,decreasing=T)])
-ggplot(a, aes(x=terms,y= freq)) +
-   geom_bar(stat = "identity", aes(fill = terms)) +
-   theme(legend.position="none",axis.text.x = element_text(angle = 90, hjust = 1))
--->
-
+<img src="./images/4gram.png" width="400" height="400" />
+<img src="./images/4gram_dist.png" width="400" height="400" />
 
 ## Shiny app. 
 One problem with shiny app is that we can't upload the complet n-gram dump (850 Mb) :  
@@ -130,7 +114,7 @@ another way is to remove stop words like the most common "the", "a", etc.
 Indeed if we look at the the distibution of the top 50 unigrams, most of them are stop words.  
 
 The n-gramization is very memory cusumming so i use parralellisation to compute 1 to 4 gram (**library : parallel, foreach and doParallel**) by 200 000 lines pack. At the end : more than **7 hours spend** to  compute 100% of the sources and **one hour** to merge the complet sets.
-We purpose to use a HADOOP Clus4ter (map-reduce) to speed up the n-gramization (it is a perpective).
+We purpose to use a HADOOP Cluster (map-reduce) to speed up the n-gramization (it is a perpective).
 
 Many optimlization can be done like :
 * remove insanity words
