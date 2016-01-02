@@ -1,17 +1,51 @@
-#setwd('D:\\_GIT_\\Capston_Project\\')
-#source('predict.R')
+############################################
+# setwd('D:\\_GIT_\\Capston_Project\\')
+# source('PredictORama_10_predict.R')
+############################################
 
-library(rJava)
-library(NLP)
-library(RWeka)
-library(tm)
-library(data.table)
-library(wordcloud)
-library(slam) #slam::row_sums
+# scriptName
+scriptName = "PredictORama_10_predict.R"
+# load comvmon script
+source("PredictORama_00_common.R")
 
-predict <- function(laPhrase,n) {
+# function ###############################################################################
+# wFinal[[n]][[1]][grep(paste("^",tmp," ",sep=""), wFinal[[n]][[1]]$terms), ] [1:3,]  
+# wFinal[[nGram]][[1]]$freq[1]
+# wFinal[[nGram]][[1]]$terms[1]
+# wFinal[[nGram]][[2]]$freq[1]
+# wFinal[[nGram]][[2]]$freqCount[1]
+
+predictFreqNGram <- function(theSentence,nGram){
+  res <- c()
+  tmp <- wFinal[[nGram]][[1]][grep(paste("^",theSentence," ",sep=""), wFinal[[nGram]][[1]]$terms), ] 
+  
+  for (i in 1:(min(3,nrow(tmp)))){
+    res <- c(res,tmp[i,]$terms)
+  }
+  return(res)
+}
+
+predictFreq <- function(theSentence){
+  tmp <- strsplit(trimws(theSentence), " ")
+  theSentence3 <- paste(tmp[[1]][1:3], collapse = ' ')
+  theSentence2 <- paste(tmp[[1]][2:3], collapse = ' ')
+  theSentence1 <- paste(tmp[[1]][3:3], collapse = ' ')
+  
+  res <- predictFreqNGram(theSentence3,4)
+  
+  if (is.null(res)==TRUE) { res <- predictFreqNGram(theSentence2,3)}
+  if (is.null(res)==TRUE) { res <- predictFreqNGram(theSentence1,2)}
+  if (is.null(res)==TRUE) { res <- c("PLOUF")}
+  return(res)
+}
+
+predictFreqN <- function(theSentence,n){
+  res <- predictFreq(theSentence)
+  return(res[n])
+}
+
+returnSentence <- function(laPhrase,n) {
   #clean the sentence and take the n last words  
-  # splitStr = strsplit(trimws(laPhrase)," ")
   laPhrase <- iconv(laPhrase, "latin1", "ASCII", sub=" ");
   laPhrase <- gsub("[^[:alpha:][:space:][:punct:]]", "", laPhrase)
   
@@ -20,32 +54,33 @@ predict <- function(laPhrase,n) {
   theSentence <- tm_map(theSentence, removePunctuation)
   theSentence <- tm_map(theSentence, removeNumbers)
   theSentence <- tm_map(theSentence, stripWhitespace)
-  theSentence <- tm_map(theSentence, function(x)removeWords(x,stopwords()))
+  
+  # attention not always
+  if (cleanStopWord==TRUE){
+    theSentence <- tm_map(theSentence, function(x)removeWords(x,stopwords()))
+  }
+  
   theSentence <- tm_map(theSentence, stripWhitespace)
   
-  # here we take only the 3 last words
-  tmp<-trimws(as.character(theSentence[[1]]))
-  tmp=strsplit(trimws(tmp), " ")
+  # here we take only the n last words
+  tmp <- trimws(as.character(theSentence[[1]]))
+  tmp <- strsplit(trimws(tmp), " ")
   
   #split avec espace les n derniers
   tmp <- tail(tmp[[1]],n)
   tmp <- paste(tmp, collapse = ' ')
-  #a<-"me about this"
-  #wF[grep(paste("^",a," ",sep=""), wF$terms), ] [1:10,]
-  #nrow(wF[wF$freq>1,])
-  tmp
+
+  return(tmp)
 }
 
-directory <- 'D:\\_GIT_\\Capston_Project\\'
-dataDirectory <- paste(directory,'data\\', sep='')
-nbGram <- 4
 
-wListe <- vector(mode="list", length=length(listFiles))
-for (i in 1:nbGram){
-  load(paste(dataDirectory,"w",i,".RData",sep=""))  
-  wListe[i] <- wF
-  rm(wF)
-}
+# Main ###############################################################################
+
+tStart <-Sys.time()
+print(paste(tStart,"> DEBUT",scriptName))
+print("---------------------------------------------------")
+#load wFinal
+load(paste(directoryData,"wFinal_",paste(minOcc, collapse = ''),".RData",sep=""))  
 
 quizz <- c("The guy in front of me just bought a pound of bacon, a bouquet, and a case of",
            "You're the reason why I smile everyday. Can you follow me please? It would mean the",
@@ -58,11 +93,17 @@ quizz <- c("The guy in front of me just bought a pound of bacon, a bouquet, and 
            "Be grateful for the good times and keep the faith during the",
            "If this isn't the cutest thing you've ever seen, then you must be")
 
-# strsplit(trimws(laPhrase)," ")
-predict(quizz(0))
-
-
-
+for (i in 1:length(quizz)){
+#for (i in 1:1){
+   cleanSentence <- returnSentence(quizz[i],nbGram)
+   listRes <- predictFreqN(cleanSentence,1)
+   print(listRes)
+}
+print("---------------------------------------------------")
 
 #setkeyv ???
 
+# end main ###########################################################################
+tEnd <-Sys.time()
+print(paste(tEnd,"end",sep=" > ",scriptName))
+print(tEnd-tStart)

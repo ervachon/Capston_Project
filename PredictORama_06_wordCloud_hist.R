@@ -1,6 +1,6 @@
 ############################################
-#setwd('D:\\_GIT_\\Capston_Project\\')
-#source('PredictORama_06_wordCloud_hist.R')
+# setwd('D:\\_GIT_\\Capston_Project\\')
+# source('PredictORama_06_wordCloud_hist.R')
 ############################################
 
 # scriptName

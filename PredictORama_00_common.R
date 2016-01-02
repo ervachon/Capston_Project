@@ -6,7 +6,14 @@
 # install.packages("RWeka")
 # install.packages("devtools")
 # install.packages("wordcloud")
+# install.packages("rJava")
+# install.packages("NLP")
+# install.packages("data.table")
+# install.packages("ggplot2")
+# install.packages("slam") 
+# install.packages("parallel")
 # install.packages("foreach")
+# install.packages("doParallel")
 #
 # attention 64bit : jre 64bit too 
 # => in c:\\programmes a  and not in  x86
@@ -17,9 +24,18 @@
 #
 #############################################################
 
+# clean stop words
+#cleanStopWord <- TRUE
+cleanStopWord <- FALSE
+
 # type of data
-typeData <- ""
-typeData <- "_noStopWords"
+returnTypeData <- function(){
+   t <- "" 
+   if (cleanStopWord==TRUE){t <- "_noStopWords"}
+   return(t)
+}
+
+typeData <- returnTypeData()
 
 #############################################################
 
@@ -99,8 +115,6 @@ mergeW <- function(w1,w2){
 createDirectoryIfNotExist <- function(directory){
   dir.create(file.path(directory))
 }
-
-#############################################################
 
 # test and create directory :
 createDirectoryIfNotExist(directoryDataTmp)

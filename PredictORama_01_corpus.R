@@ -1,6 +1,6 @@
 ############################################
-#setwd('D:\\_GIT_\\Capston_Project\\')
-#source('PredictORama_01_corpus.R')
+# setwd('D:\\_GIT_\\Capston_Project\\')
+# source('PredictORama_01_corpus.R')
 ############################################
 
 # scriptName
@@ -44,8 +44,10 @@ tmp <- foreach (i=1:length(listFiles), .packages=c('tm','RWeka','slam','data.tab
   print(paste(Sys.time(),"tm_map_rm_words",sep=" > "))
   myCorpus <- tm_map(myCorpus, removeWords, stopwords("english")) 
   
-  print(paste(Sys.time(),"tm_map_whitespace",sep=" > "))
-  myCorpus <- tm_map(myCorpus, stripWhitespace)
+  if (cleanStopWord==TRUE){
+     print(paste(Sys.time(),"tm_map_whitespace",sep=" > "))
+     myCorpus <- tm_map(myCorpus, stripWhitespace)
+  }
   
   save(myCorpus, file=paste(directoryDataTmp,"corpus_",listFiles[i],".RData", sep=""))
   rm(myCorpus)

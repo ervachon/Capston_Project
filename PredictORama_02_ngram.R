@@ -1,6 +1,6 @@
 ############################################
-#setwd('D:\\_GIT_\\Capston_Project\\')
-#source('PredictORama_02_ngram.R')
+# setwd('D:\\_GIT_\\Capston_Project\\')
+# source('PredictORama_02_ngram.R')
 ############################################
 
 # scriptName
