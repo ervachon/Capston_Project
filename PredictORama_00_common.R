@@ -25,8 +25,8 @@
 #############################################################
 
 # clean stop words
-cleanStopWord <- TRUE
-#cleanStopWord <- FALSE
+#cleanStopWord <- TRUE
+cleanStopWord <- FALSE
 
 # type of data
 returnTypeData <- function(){

@@ -28,12 +28,9 @@ quizz <- c("When you breathe, I want to be the air for you. I'll be there for yo
            "I like how the same people are in almost all of Adam Sandler's")
 
 for (i in 1:length(quizz)){
-  #for (i in 1:1){
-  cleanSentence <- returnSentence(quizz[i],nbGram-1)
-  #listRes <- predictFreq(cleanSentence)
-  theCompletRes <- predictFreqN(cleanSentence,1)
-  theRes        <- strsplit(trimws(theCompletRes), " ")[[1]]
-  print(paste(cleanSentence,theCompletRes,theRes[length(theRes)],sep=" > "))
+  cleanSentence  <- returnSentenceNGramMax(quizz[i])
+  theResList     <- predictFreq(cleanSentence)
+  print(paste(">",cleanSentence,'=',paste(theResList, collapse = '/'),"<",sep=""))
 }
 print("---------------------------------------------------")
 

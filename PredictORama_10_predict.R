@@ -9,6 +9,9 @@ scriptName = "PredictORama_10_predict.R"
 source("PredictORama_00_common.R")
 
 ######################################################################################
+returnSentenceNGramMax <- function(laPhrase) {
+   return(returnSentence(laPhrase,nbGram-1))
+}
 
 returnSentence <- function(laPhrase,n) {
   #clean the sentence and take the n last words  
@@ -45,11 +48,6 @@ returnLastWord <- function(listWords){
 }
 
 ######################################################################################
-# wFinal[[n]][[1]][grep(paste("^",tmp," ",sep=""), wFinal[[n]][[1]]$terms), ] [1:3,]  
-# wFinal[[nGram]][[1]]$freq[1]
-# wFinal[[nGram]][[1]]$terms[1]
-# wFinal[[nGram]][[2]]$freq[1]
-# wFinal[[nGram]][[2]]$freqCount[1]
 
 predictFreqNGram <- function(theSentence,nGram){
   res <- c()
@@ -64,14 +62,35 @@ predictFreqNGram <- function(theSentence,nGram){
 
 predictFreq <- function(theSentence){
   tmp <- strsplit(trimws(theSentence), " ")
-  theSentence3 <- paste(tmp[[1]][1:3], collapse = ' ')
-  theSentence2 <- paste(tmp[[1]][2:3], collapse = ' ')
-  theSentence1 <- paste(tmp[[1]][3:3], collapse = ' ')
-  
-  res <- predictFreqNGram(theSentence3,4)
-  if (is.null(res)==TRUE) { res <- predictFreqNGram(theSentence2,3)}
-  if (is.null(res)==TRUE) { res <- predictFreqNGram(theSentence1,2)}
+  listSentence <- vector(mode="list", length=nbGram-1)
+  for (i in 1:(nbGram-1)){
+    listSentence[[i]] <- paste(tmp[[1]][i:(nbGram-1)], collapse = ' ')
+  }
+  res <- predictFreqNGram(theSentence[1],nbGram)
+  i <- 2
+  while(is.null(res)==TRUE & i < nbGram ){
+    res <- predictFreqNGram(listSentence[[i]],nbGram-i+1)
+    i<-i+1
+  }
   if (is.null(res)==TRUE) { res <- NA}
   return(res)
 }
 
+######################################################################################
+
+predictMLE <- function(theSentence){
+  res <- c()
+  # p(a|w) = c(a) / somme(c(wi))
+  # w <- theSentence
+  # on cherche dans 4gram les w et on en deduit a
+  # on calcul donc p(a|w) et on garde le plus gros
+  
+  return(res)
+}
+
+######################################################################################
+# wFinal[[n]][[1]][grep(paste("^",tmp," ",sep=""), wFinal[[n]][[1]]$terms), ] [1:3,]  
+# wFinal[[nGram]][[1]]$freq[1]
+# wFinal[[nGram]][[1]]$terms[1]
+# wFinal[[nGram]][[2]]$freq[1]
+# wFinal[[nGram]][[2]]$freqCount[1]
