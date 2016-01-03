@@ -30,11 +30,9 @@ quizz <- c("The guy in front of me just bought a pound of bacon, a bouquet, and 
 
 for (i in 1:length(quizz)){
   #for (i in 1:1){
-  cleanSentence <- returnSentence(quizz[i],nbGram-1)
-  #listRes <- predictFreq(cleanSentence)
-  theCompletRes <- predictFreqN(cleanSentence,1)
-  theRes        <- strsplit(trimws(theCompletRes), " ")[[1]]
-  print(paste(cleanSentence,theCompletRes,theRes[length(theRes)],sep=" > "))
+  cleanSentence  <- returnSentence(quizz[i],nbGram-1)
+  theResList     <- predictFreq(cleanSentence)
+  print(paste(">",cleanSentence,'=',paste(theResList, collapse = '/'),"<",sep=""))
 }
 print("---------------------------------------------------")
 

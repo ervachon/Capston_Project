@@ -26,7 +26,7 @@
 
 # clean stop words
 cleanStopWord <- TRUE
-cleanStopWord <- FALSE
+#cleanStopWord <- FALSE
 
 # type of data
 returnTypeData <- function(){
@@ -75,6 +75,9 @@ nbLinesLoad<-200000
 
 #   optimize size of dump
 minOcc <- c(1,3,4,4)
+
+# # of res
+nbRes <- 3
 
 #############################################################
 

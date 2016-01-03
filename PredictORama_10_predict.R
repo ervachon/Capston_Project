@@ -8,39 +8,7 @@ scriptName = "PredictORama_10_predict.R"
 # load comvmon script
 source("PredictORama_00_common.R")
 
-# wFinal[[n]][[1]][grep(paste("^",tmp," ",sep=""), wFinal[[n]][[1]]$terms), ] [1:3,]  
-# wFinal[[nGram]][[1]]$freq[1]
-# wFinal[[nGram]][[1]]$terms[1]
-# wFinal[[nGram]][[2]]$freq[1]
-# wFinal[[nGram]][[2]]$freqCount[1]
-
-predictFreqNGram <- function(theSentence,nGram){
-  res <- NULL
-  tmp <- wFinal[[nGram]][[1]][grep(paste("^",theSentence," ",sep=""), wFinal[[nGram]][[1]]$terms), ] 
-  
-  for (i in 1:(min(3,nrow(tmp)))){
-    res <- c(res,tmp[i,]$terms)
-  }
-  return(res)
-}
-
-predictFreq <- function(theSentence){
-  tmp <- strsplit(trimws(theSentence), " ")
-  theSentence3 <- paste(tmp[[1]][1:3], collapse = ' ')
-  theSentence2 <- paste(tmp[[1]][2:3], collapse = ' ')
-  theSentence1 <- paste(tmp[[1]][3:3], collapse = ' ')
-  
-  res <- predictFreqNGram(theSentence3,4)
-  if (is.na(res[1])==TRUE) { res <- predictFreqNGram(theSentence2,3)}
-  if (is.na(res[1])==TRUE) { res <- predictFreqNGram(theSentence1,2)}
-  if (is.na(res[1])==TRUE) { res <- NA}
-  return(res)
-}
-
-predictFreqN <- function(theSentence,n){
-  res <- predictFreq(theSentence)
-  return(res[n])
-}
+######################################################################################
 
 returnSentence <- function(laPhrase,n) {
   #clean the sentence and take the n last words  
@@ -67,7 +35,43 @@ returnSentence <- function(laPhrase,n) {
   #split avec espace les n derniers
   tmp <- tail(tmp[[1]],n)
   tmp <- paste(tmp, collapse = ' ')
-
+  
   return(tmp)
+}
+
+returnLastWord <- function(listWords){
+  strTmp <- strsplit(trimws(listWords), " ")[[1]]
+  return(strTmp[length(strTmp)])
+}
+
+######################################################################################
+# wFinal[[n]][[1]][grep(paste("^",tmp," ",sep=""), wFinal[[n]][[1]]$terms), ] [1:3,]  
+# wFinal[[nGram]][[1]]$freq[1]
+# wFinal[[nGram]][[1]]$terms[1]
+# wFinal[[nGram]][[2]]$freq[1]
+# wFinal[[nGram]][[2]]$freqCount[1]
+
+predictFreqNGram <- function(theSentence,nGram){
+  res <- c()
+  tmp <- wFinal[[nGram]][[1]][grep(paste("^",theSentence," ",sep=""), wFinal[[nGram]][[1]]$terms), ] 
+  if (nrow(tmp)>0) {
+    for (i in 1:(min(nbRes,nrow(tmp)))){
+       res <- c(res,returnLastWord(tmp[i,]$terms))
+    }
+  }
+  return(res)
+}
+
+predictFreq <- function(theSentence){
+  tmp <- strsplit(trimws(theSentence), " ")
+  theSentence3 <- paste(tmp[[1]][1:3], collapse = ' ')
+  theSentence2 <- paste(tmp[[1]][2:3], collapse = ' ')
+  theSentence1 <- paste(tmp[[1]][3:3], collapse = ' ')
+  
+  res <- predictFreqNGram(theSentence3,4)
+  if (is.null(res)==TRUE) { res <- predictFreqNGram(theSentence2,3)}
+  if (is.null(res)==TRUE) { res <- predictFreqNGram(theSentence1,2)}
+  if (is.null(res)==TRUE) { res <- NA}
+  return(res)
 }
 
