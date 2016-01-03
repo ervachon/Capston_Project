@@ -25,7 +25,7 @@
 #############################################################
 
 # clean stop words
-#cleanStopWord <- TRUE
+cleanStopWord <- TRUE
 cleanStopWord <- FALSE
 
 # type of data
@@ -55,10 +55,11 @@ library(doParallel)
 #############################################################
 
 # path 
-directoryRawData <- "D:\\_MOOC_\\_coursera_\\10 project\\final\\en_US\\"
-directoryDataTmp <- paste("D:\\_GIT_\\Capston_Project\\data",typeData,".tmp\\",sep="")
-directoryData    <- paste("D:\\_GIT_\\Capston_Project\\data",typeData,"\\",sep="")
-directoryImages  <- paste("D:\\_GIT_\\Capston_Project\\images",typeData,"\\",sep="")
+directoryRawData   <- "D:\\_MOOC_\\_coursera_\\10 project\\final\\en_US\\"
+directoryDataTmp   <- paste("D:\\_GIT_\\Capston_Project\\data",typeData,".tmp\\",sep="")
+directoryData      <- paste("D:\\_GIT_\\Capston_Project\\data",typeData,"\\",sep="")
+directoryDataFinal <- paste("D:\\_GIT_\\Capston_Project\\data",typeData,".final\\",sep="")
+directoryImages    <- paste("D:\\_GIT_\\Capston_Project\\images",typeData,"\\",sep="")
 
 # sampling
 sample <- 1 # if sampling 0 to 1
@@ -116,7 +117,10 @@ createDirectoryIfNotExist <- function(directory){
   dir.create(file.path(directory))
 }
 
+options(warn=-1)
 # test and create directory :
 createDirectoryIfNotExist(directoryDataTmp)
 createDirectoryIfNotExist(directoryData)
+createDirectoryIfNotExist(directoryDataFinal)
 createDirectoryIfNotExist(directoryImages)
+options(warn=0)
