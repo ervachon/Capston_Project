@@ -25,14 +25,21 @@ quizz <- c("When you breathe, I want to be the air for you. I'll be there for yo
            "I can't deal with unsymetrical things. I can't even hold an uneven number of bags of groceries in each",
            "Every inch of you is perfect from the bottom to the",
            "I'm thankful my childhood was filled with imagination and bruises from playing",
-           "I like how the same people are in almost all of Adam Sandler's")
+           "I like how the same people are in almost all of Adam Sandler's",
+           "bdottom to the",
+           "I like how the same people are in almost all of Adam Sandler s")
+ 
 
 for (i in 1:length(quizz)){
+  #for (i in 1:1){
   cleanSentence  <- returnSentenceNGramMax(quizz[i])
-  theResList     <- predictFreq(cleanSentence)
-  print(paste(">",cleanSentence,'=',paste(theResList, collapse = '/'),"<",sep=""))
+  theResListMLE  <- predictMLE(cleanSentence)
+  print(paste(cleanSentence,'=',paste(theResListMLE, collapse = '/'),sep=""))
+  
+  theResListBO   <- predictBackOFF(cleanSentence)
+  print(paste(cleanSentence,'=',paste(theResListBO, collapse = '/'),sep=""))
+  print("---------------------------------------------------")
 }
-print("---------------------------------------------------")
 
 # end main ###########################################################################
 tEnd <-Sys.time()

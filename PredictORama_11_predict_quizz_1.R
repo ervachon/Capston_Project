@@ -30,10 +30,15 @@ quizz <- c("The guy in front of me just bought a pound of bacon, a bouquet, and 
 for (i in 1:length(quizz)){
   #for (i in 1:1){
   cleanSentence  <- returnSentenceNGramMax(quizz[i])
-  theResList     <- predictFreq(cleanSentence)
-  print(paste(">",cleanSentence,'=',paste(theResList, collapse = '/'),"<",sep=""))
+  theResListMLE  <- predictMLE(cleanSentence)
+  print(paste(,cleanSentence,'=',paste(theResListMLE, collapse = '/'),sep=""))
+  
+  theResListBO   <- predictBackOFF(cleanSentence)
+  print(paste(,cleanSentence,'=',paste(theResListBO, collapse = '/'),sep=""))
+  print("---------------------------------------------------")
 }
-print("---------------------------------------------------")
+
+
 
 # end main ###########################################################################
 tEnd <-Sys.time()
