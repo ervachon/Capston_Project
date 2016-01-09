@@ -7,16 +7,11 @@ suppressPackageStartupMessages(library(data.table))
 suppressPackageStartupMessages(library(wordcloud))
 suppressPackageStartupMessages(library(slam))
 
-loadData <- function(theData){
-  if (theData == "STOP"){
-     theData <- load(url("https://github.com/ervachon/Capston_Project/raw/gh-pages/data.shiny/wFinal_StopWords.RData"))
-  }
-  else{
-    theData <- load(url("https://github.com/ervachon/Capston_Project/raw/gh-pages/data.shiny/wFinal_noStopWords.RData"))    
-  }
-  print("ok")
-  return(wFinal)
-}
+load(url("https://github.com//ervachon//Capston_Project//raw//gh-pages//data.shiny//wFinal_StopWords.RData"))
+#load(url("https://github.com//ervachon//Capston_Project//raw//gh-pages//data.shiny//wFinal_noStopWords.RData"))    
+nbGram <- 4
+nbRes <- 7
+nbResAnalyse <- nbRes
 
 returnSentenceNGramMax <- function(laPhrase) {
   return(returnSentence(laPhrase,nbGram-1))
@@ -121,9 +116,7 @@ myPredict <- function(myData,theSentence){
 
 shinyServer(
   function(input, output) {    
-    myData          <- reactive({loadData("STOP")})
-    output$selected <- renderText({paste("You have selected : ", input$data)})
-    myPred          <- reactive({myPredict(myData(),"this is a" )})  #input$featuresSel1)})
-    output$res      <- renderText({paste("the res : ", myData)})
+    
+    output$selected <- renderText({paste("The res : ", predictMLE("this is a"))})
   }
 )

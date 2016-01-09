@@ -14,7 +14,8 @@ tStart <-Sys.time()
 print(paste(tStart,"> DEBUT",scriptName))
 print("---------------------------------------------------")
 
-load(paste(directoryDataFinal,"wFinal_",paste(minOcc, collapse = ''),".RData",sep=""))  
+#load(paste(directoryDataFinal,"wFinal_",paste(minOcc, collapse = ''),".RData",sep=""))  
+load(url("https://github.com//ervachon//Capston_Project//raw//gh-pages//data.shiny//wFinal_StopWords.RData"))
 
 quizz <- c("The guy in front of me just bought a pound of bacon, a bouquet, and a case of",
            "You're the reason why I smile everyday. Can you follow me please? It would mean the",
@@ -31,10 +32,10 @@ for (i in 1:length(quizz)){
   #for (i in 1:1){
   cleanSentence  <- returnSentenceNGramMax(quizz[i])
   theResListMLE  <- predictMLE(cleanSentence)
-  print(paste(,cleanSentence,'=',paste(theResListMLE, collapse = '/'),sep=""))
+  print(paste(cleanSentence,'=',paste(theResListMLE, collapse = '/'),sep=""))
   
   theResListBO   <- predictBackOFF(cleanSentence)
-  print(paste(,cleanSentence,'=',paste(theResListBO, collapse = '/'),sep=""))
+  print(paste(cleanSentence,'=',paste(theResListBO, collapse = '/'),sep=""))
   print("---------------------------------------------------")
 }
 
