@@ -5,15 +5,34 @@ author      : Eric VACHON
 job         : January 2016
 logo        : logo.jpg
 framework   : io2012   # {io2012, html5slides, shower, dzslides, deckjs...}
-widgets     : [bootstrap,quiz]   # {mathjax, quiz, bootstrap}
+widgets     : [bootstrap]   # {mathjax, quiz, v}
 mode        : selfcontained # {standalone, draft}
 knit        : slidify::knit2slides
 --- 
+<style>
+aside.gdbar {
+  height: 200px;
+  width: 410px;
+}
+aside.gdbar img {
+  width: 390px;
+  height: 180px;
+}
+
+</style>
+
 <!--
+https://cran.r-project.org/bin/windows/Rtools/Rtools33.exe
+
+library(devtools)
+install_github('ramnathv/slidify', 'ramnathv')
+install_github('ramnathv/slidifyLibraries', 'ramnathv')
+-------------------------------------------------------------------------
 library(slidify)
 setwd("D:\\_GIT_\\Capston_Project")
+slidify("slides.Rmd")
 publish(title = 'Project PredictORama', 'slides.html', host = 'rpubs') 
-
+-------------------------------------------------------------------------
 in libraries/frameworks/io2012/css/default.css
 
 aside.gdbar {
@@ -23,64 +42,65 @@ aside.gdbar {
 aside.gdbar img {
   width: 390px;
   height: 180px;
+-------------------------------------------------------------------------
+.Rprofile put options(rpubs.upload.method = "internal") 
+
 -->
 
 
-## PredictORama
+## PredictORama : Overview
 <br>
-The aim of this project is to use three datasets from SwiftKey to create a algorithm to predict the next word of a sentence. 
+The aim of this project is to use three datasets from  [SwiftKey](https://d396qusza40orc.cloudfront.net/dsscapstone/dataset/Coursera-SwiftKey.zip) to create a algorithm to predict the next word of a sentence. 
 
-To realize this, we create two clean data sets of [1-gram, 2-gram, 3-gram and 4-gram] (https://en.wikipedia.org/wiki/N-gram) : one with [stop words] (https://en.wikipedia.org/wiki/Stop_words) and another without.
+To realize this, we create two clean data sets of [1-gram, 2-gram, 3-gram and 4-gram] (https://en.wikipedia.org/wiki/N-gram) : one with [stop words] (https://en.wikipedia.org/wiki/Stop_words) and another without. The shiny app provide to compare results between this two data sets (with and without stop words).  
 
-![img](./assets/img/1-4gram.png)  
+NB: a n-gram is a (n-1)-gram + 1-gram.   
+
+![](./assets/img/1-4gram.png)  
 
 --- .class #id 
 
-## Algorithm and prediction 
+##  PredictORama : Corpus creation  
 
-1. Load and clean data  
-  a. transform data to lower case  
-  b. remove punctuation  
-  c. remove numbers  
-  d. remove or not stop words  
-  e. remove multiple whitespace  
-NB: a n-gram is a (n-1)-gram + 1-gram.   
-
-2. Prediction  
-  a. take the 3th last words of the sequence ans search if this 3-gram can be found as 3-gram start of a 4-gram in the 4-gram corpus to infer the last word.  
-  b. if we found 4-gram started by this 3-gram we add to the result the top frequency words  
-  c. if not do find in the quadrigram corpus we do the sam with the 2 last words of the sentence and we look in the trigram corpus ...  
-  d. and we repeat this in the bigram corpus if not found.  
-  
-At the end we present the 7th top frequency words.
+![](./assets/img/algo.png)  
+NB: We optimize the time of gramization by using the partallelisation with R (library parallel, foreach, doParallel), but this parallelisation can be greater with a hadoop cluster 
 
 --- .class #id  
 
-## shiny app
+## PredictORama : Prediction and optimization
 
-To optimize the memory of the the shiny app, we reduce the n-gram array :
-- we take only the 1-gram with minimum 2 occurences
-- we take only the 2-gram with minimum 4 occurences
-- we take only the 3-gram with minimum 5 occurences
-- we take only the 4-gram with minimum 5 occurences
-  
-![img](./assets/img/app.png)  
+### <u>How we predict :</u>
+1. apply to the user sentence the same transformation as the corpus creation
+2. take the 3 last words of the sentence
+3. find this 3-gram as the 3 begining words on the 4-gram corpus
+4. if find all 4-gram (max 7 res)and add them into result set
+5. repeat 2. to 6 with 3-gram and 2-gram until 7 results find or all corpus analysed
+
+### <u>Memory optimisation</u>
+To optimize the memory of [The Shiny App](https://ervachon.shinyapps.io/Capston_Project), we reduce the n-gram corpus :  
+1-gram with min 2 occurences  
+2-gram with min 4 occurences  
+3-gram with min 5 occurences  
+4-gram with min 5 occurences.  
+
+![§§§](./assets/img/app.png)  
 
 --- .class #id  
 
-## Why this is great :-)
-We optimize the time of gramization by using the partallelisationwith R (library parallel, foreach, doParallel), but this parallelisation can be greater with a hadoop cluster :-)  
-one interesting thing is to compare clean data with and without stop words.  
+##  PredictORama : Perspectives
 
-The are a lot's of perspectives with this study,for example :
-- using more algorithms tyo predict (good turing, smoothiong,...) 
-- learn and save from user sentence  
-- ...
-- and many more ...
+The are a lot's of perspectives with this study,for example :  
+* using more algorithms to predict like linear interpolation, smoothing (good turing, ...) 
+* learn from user sentences and save into corpus  
+* use a hadoop cluster to spend less time to gramimzation (instead of using R parallelisation) 
+* and many more ...
+<br>  
 
-My URL :  
+### My URL
 [The Shiny App](https://ervachon.shinyapps.io/Capston_Project)  
 [My Github](https://github.com/ervachon/Capston_Project)  
 [Coursera Milestone Report](http://rpubs.com/ervachon/139299)
+<br>  
 
+### Thanks to read my slides :-)
 
