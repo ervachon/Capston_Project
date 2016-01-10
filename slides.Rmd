@@ -76,14 +76,14 @@ NB: We optimize the time of gramization by using the partallelisation with R (li
 4. if find all 4-gram (max 7 res)and add them into result set
 5. repeat 2. to 6 with 3-gram and 2-gram until 7 results find or all corpus analysed
 
-### <u>Memory optimisation</u>
+### <u>Memory optimisation ???</u>
 To optimize the memory of [The Shiny App](https://ervachon.shinyapps.io/Capston_Project), we reduce the n-gram corpus :  
 1-gram with min 2 occurences  
 2-gram with min 4 occurences  
 3-gram with min 5 occurences  
 4-gram with min 5 occurences.  
 
-![§§§](./assets/img/app.png)  
+![000](./assets/img/app.png)  
 
 --- .class #id  
 
