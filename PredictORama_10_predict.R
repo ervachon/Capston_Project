@@ -5,7 +5,7 @@
 
 # scriptName
 scriptName = "PredictORama_10_predict.R"
-# load comvmon script
+# load common script
 source("PredictORama_00_common.R")
 
 #load(paste(directoryDataFinal,"wFinal_",paste(minOcc, collapse = ''),".RData",sep=""))  

@@ -14,8 +14,8 @@ tStart <-Sys.time()
 print(paste(tStart,"> DEBUT",scriptName))
 print("---------------------------------------------------")
 
-#load(paste(directoryDataFinal,"wFinal_",paste(minOcc, collapse = ''),".RData",sep=""))  
-load(url("https://github.com//ervachon//Capston_Project//raw//gh-pages//data.shiny//wFinal_StopWords.RData"))
+load(paste(directoryDataFinal,"wFinal_",paste(minOcc, collapse = ''),".RData",sep=""))  
+#load(url("https://github.com//ervachon//Capston_Project//raw//gh-pages//data.shiny//wFinal_StopWords.RData"))
 
 quizz <- c("The guy in front of me just bought a pound of bacon, a bouquet, and a case of",
            "You're the reason why I smile everyday. Can you follow me please? It would mean the",
