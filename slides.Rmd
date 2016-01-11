@@ -51,6 +51,7 @@ aside.gdbar img {
 ## PredictORama : Overview
 <br>
 The aim of this project is to use three datasets from  [SwiftKey](https://d396qusza40orc.cloudfront.net/dsscapstone/dataset/Coursera-SwiftKey.zip) to create a algorithm to predict the next word of a sentence. 
+For exemple, if we give to the algorithm : "i love" may be if we train the algorithm with love letters, it will give us for exemple the next word : "you".
 
 To realize this, we create two clean data sets of [1-gram, 2-gram, 3-gram and 4-gram] (https://en.wikipedia.org/wiki/N-gram) : one with [stop words] (https://en.wikipedia.org/wiki/Stop_words) and another without. The shiny app provide to compare results between this two data sets (with and without stop words).  
 
@@ -60,47 +61,47 @@ NB: a n-gram is a (n-1)-gram + 1-gram.
 
 --- .class #id 
 
-##  PredictORama : Corpus creation  
+##  PredictORama : Algorithm  
+### <u>Corpus creation</u>
+The first step of this work is to clean data :  
+1. we change the case of the text to lower  
+2. we remove punctuation, numbers, stopwords  and multiple whitespace.    
+We optimize the time of gramization by using the R libraries [parallel](https://stat.ethz.ch/R-manual/R-devel/library/parallel/doc/parallel.pdf), [doParallel](https://cran.r-project.org/web/packages/doParallel/index.html) and [foreach](https://cran.r-project.org/web/packages/foreach/index.html).
 
-![](./assets/img/algo.png)  
-NB: We optimize the time of gramization by using the partallelisation with R (library parallel, foreach, doParallel), but this parallelisation can be greater with a hadoop cluster 
-
---- .class #id  
-
-## PredictORama : Prediction and optimization
-
-### <u>How we predict :</u>
+### <u>Prediction</u>
 1. apply to the user sentence the same transformation as the corpus creation
 2. take the 3 last words of the sentence
 3. find this 3-gram as the 3 begining words on the 4-gram corpus
 4. if find all 4-gram (max 7 res)and add them into result set
 5. repeat 2. to 6 with 3-gram and 2-gram until 7 results find or all corpus analysed
 
-### <u>Memory optimisation ???</u>
-To optimize the memory of [The Shiny App](https://ervachon.shinyapps.io/Capston_Project), we reduce the n-gram corpus :  
-1-gram with min 2 occurences  
-2-gram with min 4 occurences  
-3-gram with min 5 occurences  
-4-gram with min 5 occurences.  
+--- .class #id 
+##  PredictORama : Shiny app
+![](./assets/img/PredictORama2.png)  
+First you choice on the left which corpus you want to use : with or without stop words.   
+Next simply write a sentence on the "sentence" box and wait a little the seven buttons on the bottom will have their label update by the 7 best predict words.  
+If you click on a button you add the word to your sentence and you can repeat if you want.   
 
-![000](./assets/img/app.png)  
+### <u>Memory optimisation</u>
+To optimize the memory of [The Shiny App](https://ervachon.shinyapps.io/Capston_Project), we truncate the n-gram corpus:  we select only 1-gram with minimum 2 occurences, 2-gram with minimum 4, 3-gram with minimum 5 and 4-gram with minimum 5.
 
 --- .class #id  
 
 ##  PredictORama : Perspectives
 
-The are a lot's of perspectives with this study,for example :  
+The are a lot's of perspectives with this study, for example :  
 * using more algorithms to predict like linear interpolation, smoothing (good turing, ...) 
 * learn from user sentences and save into corpus  
-* use a hadoop cluster to spend less time to gramimzation (instead of using R parallelisation) 
+* use more corpus to enhance our n-gram corpus  
+* use a hadoop cluster to spend less time to gramimzation (instead of using R parallelisation)  
+* use the complete n-gram corpus and not truncate one (cause of shiny memory optimization)
 * and many more ...
-<br>  
 
-### My URL
+### <u>My URL</u>
 [The Shiny App](https://ervachon.shinyapps.io/Capston_Project)  
 [My Github](https://github.com/ervachon/Capston_Project)  
 [Coursera Milestone Report](http://rpubs.com/ervachon/139299)
 <br>  
 
-### Thanks to read my slides :-)
+### <u>Thanks to read my slides :-)</u>
 
