@@ -88,7 +88,8 @@ aside.gdbar img {
 <h2>PredictORama : Overview</h2>
 
 <p><br>
-The aim of this project is to use three datasets from  <a href="https://d396qusza40orc.cloudfront.net/dsscapstone/dataset/Coursera-SwiftKey.zip">SwiftKey</a> to create a algorithm to predict the next word of a sentence. </p>
+The aim of this project is to use three datasets from  <a href="https://d396qusza40orc.cloudfront.net/dsscapstone/dataset/Coursera-SwiftKey.zip">SwiftKey</a> to create a algorithm to predict the next word of a sentence. 
+For exemple, if we give to the algorithm : &quot;i love&quot; may be if we train the algorithm with love letters, it will give us for exemple the next word : &quot;you&quot;.</p>
 
 <p>To realize this, we create two clean data sets of <a href="https://en.wikipedia.org/wiki/N-gram">1-gram, 2-gram, 3-gram and 4-gram</a> : one with <a href="https://en.wikipedia.org/wiki/Stop_words">stop words</a> and another without. The shiny app provide to compare results between this two data sets (with and without stop words).  </p>
 
@@ -102,22 +103,17 @@ The aim of this project is to use three datasets from  <a href="https://d396qusz
 
 <slide class="class" id="id" style="background:;">
   <hgroup>
-    <h2>PredictORama : Corpus creation</h2>
+    <h2>PredictORama : Algorithm</h2>
   </hgroup>
   <article data-timings="">
-    <p><img src="./assets/img/algo.png" alt=""><br>
-NB: We optimize the time of gramization by using the partallelisation with R (library parallel, foreach, doParallel), but this parallelisation can be greater with a hadoop cluster </p>
+    <h3><u>Corpus creation</u></h3>
 
-  </article>
-  <!-- Presenter Notes -->
-</slide>
+<p>The first step of this work is to clean data :<br>
+1. we change the case of the text to lower<br>
+2. we remove punctuation, numbers, stopwords  and multiple whitespace.<br>
+We optimize the time of gramization by using the R libraries <a href="https://stat.ethz.ch/R-manual/R-devel/library/parallel/doc/parallel.pdf">parallel</a>, <a href="https://cran.r-project.org/web/packages/doParallel/index.html">doParallel</a> and <a href="https://cran.r-project.org/web/packages/foreach/index.html">foreach</a>.</p>
 
-<slide class="class" id="id" style="background:;">
-  <hgroup>
-    <h2>PredictORama : Prediction and optimization</h2>
-  </hgroup>
-  <article data-timings="">
-    <h3><u>How we predict :</u></h3>
+<h3><u>Prediction</u></h3>
 
 <ol>
 <li>apply to the user sentence the same transformation as the corpus creation</li>
@@ -127,15 +123,23 @@ NB: We optimize the time of gramization by using the partallelisation with R (li
 <li>repeat 2. to 6 with 3-gram and 2-gram until 7 results find or all corpus analysed</li>
 </ol>
 
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>PredictORama : Shiny app</h2>
+  </hgroup>
+  <article data-timings="">
+    <p><img src="./assets/img/PredictORama2.png" alt=""><br>
+First you choice on the left which corpus you want to use : with or without stop words.<br>
+Next simply write a sentence on the &quot;sentence&quot; box and wait a little the seven buttons on the bottom will have their label update by the 7 best predict words.<br>
+If you click on a button you add the word to your sentence and you can repeat if you want.   </p>
+
 <h3><u>Memory optimisation</u></h3>
 
-<p>To optimize the memory of <a href="https://ervachon.shinyapps.io/Capston_Project">The Shiny App</a>, we reduce the n-gram corpus :<br>
-1-gram with min 2 occurences<br>
-2-gram with min 4 occurences<br>
-3-gram with min 5 occurences<br>
-4-gram with min 5 occurences.  </p>
-
-<p><img src="./assets/img/app.png" alt="§§§">  </p>
+<p>To optimize the memory of <a href="https://ervachon.shinyapps.io/Capston_Project">The Shiny App</a>, we truncate the n-gram corpus:  we select only 1-gram with minimum 2 occurences, 2-gram with minimum 4, 3-gram with minimum 5 and 4-gram with minimum 5.</p>
 
   </article>
   <!-- Presenter Notes -->
@@ -146,24 +150,25 @@ NB: We optimize the time of gramization by using the partallelisation with R (li
     <h2>PredictORama : Perspectives</h2>
   </hgroup>
   <article data-timings="">
-    <p>The are a lot&#39;s of perspectives with this study,for example :  </p>
+    <p>The are a lot&#39;s of perspectives with this study, for example :  </p>
 
 <ul>
 <li>using more algorithms to predict like linear interpolation, smoothing (good turing, ...) </li>
 <li>learn from user sentences and save into corpus<br></li>
-<li>use a hadoop cluster to spend less time to gramimzation (instead of using R parallelisation) </li>
-<li>and many more ...
-<br><br></li>
+<li>use more corpus to enhance our n-gram corpus<br></li>
+<li>use a hadoop cluster to spend less time to gramimzation (instead of using R parallelisation)<br></li>
+<li>use the complete n-gram corpus and not truncate one (cause of shiny memory optimization)</li>
+<li>and many more ...</li>
 </ul>
 
-<h3>My URL</h3>
+<h3><u>My URL</u></h3>
 
 <p><a href="https://ervachon.shinyapps.io/Capston_Project">The Shiny App</a><br>
 <a href="https://github.com/ervachon/Capston_Project">My Github</a><br>
 <a href="http://rpubs.com/ervachon/139299">Coursera Milestone Report</a>
 <br>  </p>
 
-<h3>Thanks to read my slides :-)</h3>
+<h3><u>Thanks to read my slides :-)</u></h3>
 
   </article>
   <!-- Presenter Notes -->
@@ -181,13 +186,13 @@ NB: We optimize the time of gramization by using the partallelisation with R (li
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=2 title='PredictORama : Corpus creation'>
+        data-slide=2 title='PredictORama : Algorithm'>
          2
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=3 title='PredictORama : Prediction and optimization'>
+        data-slide=3 title='PredictORama : Shiny app'>
          3
       </a>
     </li>

@@ -11,7 +11,6 @@
 # install.packages("data.table")
 # install.packages("ggplot2")
 # install.packages("slam") 
-# install.packages("parallel")
 # install.packages("foreach")
 # install.packages("doParallel")
 #
