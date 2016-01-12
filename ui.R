@@ -26,18 +26,13 @@ shinyUI(pageWithSidebar(
         tabPanel("PredictORama", 
                  textInput("sentence", label = h4("Enter your sentence bellow:"), 
                            value='',width = '100%'), 
-                 #verbatimTextOutput("stopW"),
-                 verbatimTextOutput("triGram"),
-                 verbatimTextOutput("predict"),
-                 fluidRow(column(width=3,actionButton("res1", label="Top 1",width = '100%')),
-                          column(width=3,actionButton("res2", label="Top 2",width = '100%')),
-                          column(width=3,actionButton("res3", label="Top 3",width = '100%')),
-                          column(width=3,actionButton("res4", label="Top 4",width = '100%'))
+                 #verbatimTextOutput("triGram"),
+                 #verbatimTextOutput("predict"),
+                 fluidRow(#column(width=3,actionButton("res1", label="Top 1",width = '100%')),
+                          uiOutput("button_1_4")
                           ),br(),
-                 fluidRow(column(width=3,actionButton("res5", label="Top 5",width = '100%')),
-                          column(width=3,actionButton("res6", label="Top 6",width = '100%')),
-                          column(width=3,actionButton("res6", label="Top 7",width = '100%')),
-                          column(width=3,actionButton("res7", label="Top 8",width = '100%'))
+                 fluidRow(#column(width=3,actionButton("res5", label="Top 5",width = '100%')),
+                          uiOutput("button_5_8")
                          )
                  )
         ,tabPanel("Documentation"  , includeHTML("./www/documentation.html"))

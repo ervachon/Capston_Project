@@ -10,11 +10,13 @@ suppressPackageStartupMessages(library(slam))
 #load(url("https://github.com//ervachon//Capston_Project//raw//gh-pages//data.shiny//wFinal_noStopWords.RData"))
 
 shinyServer(
-  function(input, output) {    
+  function(input, output,session) {    
 
     nbGram <- 4
     nbRes <- 8
     nbResAnalyse <- nbRes
+    
+    #ListDefault <- c('top1','top2' ,'top3', 'top4','top5','top6','top7','top8')
 
     returnSentenceNGramMax <- function(laPhrase) {
       return(returnSentence(laPhrase,nbGram-1))
@@ -89,10 +91,6 @@ shinyServer(
           res <- c(res,returnLastWord(tmp[i,]$terms))
         }
       }
-      #print(length(res))
-      #print(paste("*",res,"*",sep=""))
-      
-      if (is.null(res)==TRUE){res<-c('the')}
       return(res)
     }
     
@@ -113,6 +111,14 @@ shinyServer(
         }
         i<-i+1
       }
+      
+      i<-1
+      while (length(res) < nbRes){
+         if ((wFinal[[1]][[1]]$terms[i] %in% res)== FALSE){
+            res <- c(res,wFinal[[1]][[1]]$terms[i])}
+         i <- i + 1
+      }
+      
       return(res[1:(min(nbRes,length(res)))])
     }
     
@@ -130,12 +136,45 @@ shinyServer(
                  ) 
     
     cleanStopWord <- reactive({input$corpus == 2})
-                 
-    #output$stopW <- reactive({input$corpus}) 
-    output$predict <- renderText({predictMLE(returnSentenceNGramMax(input$sentence))})
+    
+    output$predict <- renderText({
+          a <- predictBackOFF(returnSentenceNGramMax(input$sentence))
+          res$list<-a
+          return(a)
+      })
+    
+    observe(res$list<-predictBackOFF(returnSentenceNGramMax(input$sentence)))
+    
     output$triGram <- renderText({returnSentenceNGramMax(input$sentence)})
 
-  })
+    output$button_1_4 <- renderUI({
+      lapply(1:4, function(i) {
+        actionButton(inputId = paste0("b_", i), 
+                     label   = res$list[i],
+                     width = '24%')
+      })
+    })
+
+    output$button_5_8 <- renderUI({
+      lapply(5:8, function(i) {
+        actionButton(inputId = paste0("b_", i), 
+                     label   = res$list[i],
+                     width = '24%')
+      })
+    })
+    
+    observeEvent(input[[paste("b_",1,sep="")]], {updateTextInput(session, "sentence", value = paste(input[["sentence"]],res$list[1]))})
+    observeEvent(input[[paste("b_",2,sep="")]], {updateTextInput(session, "sentence", value = paste(input[["sentence"]],res$list[2]))})
+    observeEvent(input[[paste("b_",3,sep="")]], {updateTextInput(session, "sentence", value = paste(input[["sentence"]],res$list[3]))})
+    observeEvent(input[[paste("b_",4,sep="")]], {updateTextInput(session, "sentence", value = paste(input[["sentence"]],res$list[4]))})
+    observeEvent(input[[paste("b_",5,sep="")]], {updateTextInput(session, "sentence", value = paste(input[["sentence"]],res$list[5]))})
+    observeEvent(input[[paste("b_",6,sep="")]], {updateTextInput(session, "sentence", value = paste(input[["sentence"]],res$list[6]))})
+    observeEvent(input[[paste("b_",7,sep="")]], {updateTextInput(session, "sentence", value = paste(input[["sentence"]],res$list[7]))})
+    observeEvent(input[[paste("b_",8,sep="")]], {updateTextInput(session, "sentence", value = paste(input[["sentence"]],res$list[8]))})
+    
+    res <- reactiveValues(list=c('top1','top2' ,'top3', 'top4','top5','top6','top7','top8'))
+    
+})
 
 #Be grateful for the good times and keep the faith during the
 #times keep faith=god/will/hope/can/jesus/faith/believe"

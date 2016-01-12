@@ -66,10 +66,12 @@ library(devtools)
 install_github('ramnathv/slidify', 'ramnathv')
 install_github('ramnathv/slidifyLibraries', 'ramnathv')
 -------------------------------------------------------------------------
+options(rpubs.upload.method = "internal") 
 library(slidify)
 setwd("D:\\_GIT_\\Capston_Project")
 slidify("slides.Rmd")
 publish(title = 'Project PredictORama', 'slides.html', host = 'rpubs') 
+This is the Capston project of the Coursera data scientist specialization done by Eric VACHON.
 -------------------------------------------------------------------------
 in libraries/frameworks/io2012/css/default.css
 
@@ -134,12 +136,11 @@ We optimize the time of gramization by using the R libraries <a href="https://st
   <article data-timings="">
     <p><img src="./assets/img/PredictORama2.png" alt=""><br>
 First you choice on the left which corpus you want to use : with or without stop words.<br>
-Next simply write a sentence on the &quot;sentence&quot; box and wait a little the seven buttons on the bottom will have their label update by the 7 best predict words.<br>
-If you click on a button you add the word to your sentence and you can repeat if you want.   </p>
+Next simply write a sentence on the &quot;sentence&quot; box and wait a little the eight buttons on the bottom will have their label update by the eight best predict words. If you click on a button you add the word to your sentence and you can repeat if you want. </p>
 
 <h3><u>Memory optimisation</u></h3>
 
-<p>To optimize the memory of <a href="https://ervachon.shinyapps.io/Capston_Project">The Shiny App</a>, we truncate the n-gram corpus:  we select only 1-gram with minimum 2 occurences, 2-gram with minimum 4, 3-gram with minimum 5 and 4-gram with minimum 5.</p>
+<p>To optimize the memory of <a href="https://ervachon.shinyapps.io/Capston_Project">The Shiny App</a>, we truncate the n-gram corpus:  we select only 1-gram with minimum 2 occurences, 2-gram with 4, 3-gram with 5 and 4-gram with 5.</p>
 
   </article>
   <!-- Presenter Notes -->
