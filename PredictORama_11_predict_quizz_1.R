@@ -26,7 +26,8 @@ quizz <- c("The guy in front of me just bought a pound of bacon, a bouquet, and 
            "Ohhhhh #PointBreak is on tomorrow. Love that film and haven't seen it in quite some",
            "After the ice bucket challenge Louis will push his long wet hair out of his eyes with his little",
            "Be grateful for the good times and keep the faith during the",
-           "If this isn't the cutest thing you've ever seen, then you must be")
+           "If this isn't the cutest thing you've ever seen, then you must be",
+           "can i know just")
 
 for (i in 1:length(quizz)){
   #for (i in 1:1){

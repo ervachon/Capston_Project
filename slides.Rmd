@@ -67,7 +67,7 @@ NB: a n-gram is a (n-1)-gram + 1-gram.
 ### <u>Corpus creation</u>
 The first step of this work is to clean data :  
 1. we change the case of the text to lower  
-2. we remove punctuation, numbers, stopwords  and multiple whitespace.    
+2. we remove punctuation, numbers, stopwords (or not)  and multiple whitespace.    
 We optimize the time of gramization by using the R libraries [parallel](https://stat.ethz.ch/R-manual/R-devel/library/parallel/doc/parallel.pdf), [doParallel](https://cran.r-project.org/web/packages/doParallel/index.html) and [foreach](https://cran.r-project.org/web/packages/foreach/index.html).
 
 ### <u>Prediction</u>
@@ -79,12 +79,11 @@ We optimize the time of gramization by using the R libraries [parallel](https://
 
 --- .class #id 
 ##  PredictORama : Shiny app
-![](./assets/img/PredictORama2.png)  
-First you choice on the left which corpus you want to use : with or without stop words.   
-Next simply write a sentence on the "sentence" box and wait a little the eight buttons on the bottom will have their label update by the eight best predict words. If you click on a button you add the word to your sentence and you can repeat if you want. 
+[![](./assets/img/PredictORama2.png)](https://ervachon.shinyapps.io/Capston_Project)
+First you choice on the sidebarPanel which corpus you want to use: with or without stop words. **WAIT** a few seconds until **"LOAD CORPUS"** is gone (top right on the screen). Next write a sentence on the "sentence" box and wait until the eight buttons labels are update with the best predict words. Then you can click on a button you add the word to your sentence. 
 
 ### <u>Memory optimisation</u>
-To optimize the memory of [The Shiny App](https://ervachon.shinyapps.io/Capston_Project), we truncate the n-gram corpus:  we select only 1-gram with minimum 2 occurences, 2-gram with 4, 3-gram with 5 and 4-gram with 5.
+To optimize the memory of [The Shiny App](https://ervachon.shinyapps.io/Capston_Project), we truncate the n-gram corpus, for example  we select only 2-gram with minimum 4 occurences.
 
 --- .class #id  
 

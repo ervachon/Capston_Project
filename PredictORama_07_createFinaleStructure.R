@@ -5,7 +5,7 @@
 
 # scriptName
 scriptName <- "PredictORama_07_createFinaleStructure.R"
-# load comvmon script
+# load common script
 source("PredictORama_00_common.R")
 
 tStart <-Sys.time()
@@ -25,6 +25,7 @@ for (i in 1:nbGram){
   wFinal[[i]] <- wTmp
 }
 save(wFinal,file=paste(directoryDataFinal,"wFinal_",paste(minOcc, collapse = ''),".RData",sep=""))  
+saveRDS(wFinal,file=paste(directoryDataFinal,"wFinal_",paste(minOcc, collapse = ''),".RDs",sep=""))  
 
 # end main ##########################################################################
 

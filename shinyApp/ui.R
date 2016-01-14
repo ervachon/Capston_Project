@@ -29,8 +29,10 @@ shinyUI(pageWithSidebar(
         tabPanel("PredictORama", 
                  textInput("sentence", label = h4("Enter your sentence bellow:"), 
                            value='',width = '100%'), 
-                 verbatimTextOutput("triGram"),
-                 verbatimTextOutput("predict"),
+                 
+#                  verbatimTextOutput("triGram"),
+#                  verbatimTextOutput("predict"),
+                 
                  fluidRow(#column(width=3,actionButton("res1", label="Top 1",width = '100%')),
                           uiOutput("button_1_4")
                           ),br(),

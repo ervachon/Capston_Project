@@ -8,23 +8,38 @@ suppressPackageStartupMessages(library(tm))
 suppressPackageStartupMessages(library(data.table))
 suppressPackageStartupMessages(library(slam))
 
+nbGram <- 4
+nbRes <- 8
+nbResAnalyse <- nbRes
+
+SelectData <- function(clean){
+  if (clean == TRUE) {
+    withProgress(message = paste('##################################',
+                                 'LOAD NO STOPWORD CORPUS',
+                                 '##################################'), 
+                 value = 0,
+               { data <- readRDS('./www/wFinal_noStopWords.RDs') 
+                 #incProgress(1,detail = "########## OK ##########")
+                })
+  } else {
+    withProgress(message = paste('################################## ',
+                                 'LOAD STOPWORD CORPUS',
+                                 '################################## '), 
+                 value = 0,
+               { data <- readRDS('./www/wFinal_StopWords.RDs') 
+                 #incProgress(1,detail = "########## OK ##########")
+               })
+  }
+  return(data)
+}
+
 shinyServer(
   function(input, output,session) {    
-
-     withProgress(message = 'LOAD STOPWORD CORPUS', value = 0,
-                  { wFinal <- readRDS('./www/wFinal_StopWords.RDs') 
-                  incProgress(1,detail = "OK")
-                  })
-    
-    nbGram <- 4
-    nbRes <- 8
-    nbResAnalyse <- nbRes
-
-    returnSentenceNGramMax <- function(laPhrase) {
-      return(returnSentence(laPhrase,nbGram-1))
+    returnSentenceNGramMax <- function(laPhrase,clean) {
+      return(returnSentence(laPhrase,nbGram-1,clean))
     }
     
-    returnSentence <- function(laPhrase,n) {
+    returnSentence <- function(laPhrase,n,clean) {
       #clean the sentence and take the n last words  
       laPhrase <- iconv(laPhrase, "latin1", "ASCII", sub=" ");
       laPhrase <- gsub("[^[:alpha:][:space:][:punct:]]", "", laPhrase)
@@ -35,7 +50,7 @@ shinyServer(
       theSentence <- tm_map(theSentence, removeNumbers)
       theSentence <- tm_map(theSentence, stripWhitespace)
       
-      if (res$cleanStopWord==TRUE){
+      if (clean==TRUE){
         theSentence <- tm_map(theSentence, function(x)removeWords(x,stopwords()))
       }
       
@@ -64,24 +79,6 @@ shinyServer(
     
     returnNbGram <- function(word){
       return(length(strsplit(word," ")[[1]]))
-    }
-    
-    returnFrequenceNgram <- function(theNGram){
-      n <- returnNbGram(theNGram)
-      return (wFinal[[n]][[1]]$freq[match(theNGram, wFinal[[n]][[1]]$terms[])])
-    }
-    
-    returnCountNgramCorpus <- function(theNGram){
-      return (wFinal[[n]][[1]]$freq[match(theNGram, wFinal[[n]][[1]]$terms[])])
-    }
-    
-    returnListNGramOfNgramLessOne <- function(theNgram){
-      n <- returnNbGram(theNgram)
-      listTmp <- wFinal[[n+1]][[1]][grep(paste("^",theNgram," ",sep=""),
-                                         wFinal[[n+1]][[1]]$terms), ] 
-      tmp <- c()
-      if (nrow(listTmp)>0){tmp <-listTmp[1:min(nbResAnalyse,nrow(listTmp)),]}
-      return(tmp)
     }
     
     predictMLE <- function(theSentence){
@@ -115,31 +112,42 @@ shinyServer(
       
       i<-1
       while (length(res) < nbRes){
-         if ((wFinal[[1]][[1]]$terms[i] %in% res)== FALSE){
-            res <- c(res,wFinal[[1]][[1]]$terms[i])}
-         i <- i + 1
+        if ((wFinal()[[1]][[1]]$terms[i] %in% res)== FALSE){
+          res <- c(res,wFinal()[[1]][[1]]$terms[i])}
+        i <- i + 1
       }
       
       if (theSentence==""){res <- c('-','-' ,'-', '-','-','-','-','-')}
       
       return(res[1:(min(nbRes,length(res)))])
     }
-    
-    myPredict <- function(myData,theSentence){
-      result <- "OK"
-      return(as.data.frame(results))
+    returnFrequenceNgram <- function(theNGram){
+      n <- returnNbGram(theNGram)
+      return (wFinal()[[n]][[1]]$freq[match(theNGram, wFinal()[[n]][[1]]$terms[])])
     }
-
+    
+    returnCountNgramCorpus <- function(theNGram){
+      return (wFinal()[[n]][[1]]$freq[match(theNGram, wFinal()[[n]][[1]]$terms[])])
+    }
+    
+    returnListNGramOfNgramLessOne <- function(theNgram){
+      n <- returnNbGram(theNgram)
+      listTmp <- wFinal()[[n+1]][[1]][grep(paste("^",theNgram," ",sep=""),
+                                         wFinal()[[n+1]][[1]]$terms), ] 
+      tmp <- c()
+      if (nrow(listTmp)>0){tmp <-listTmp[1:min(nbResAnalyse,nrow(listTmp)),]}
+      return(tmp)
+    }
+    
+    wFinal <- reactive({SelectData(input$corpus == "2")})
+    
     output$predict <- renderText({
-          print("--------------------")  
-          print(wFinal[[1]][[1]]$terms[1])
-          print("--------------------")  
-          a <- predictBackOFF(returnSentenceNGramMax(input$sentence))
-          res$list<-a
+          a <- predictBackOFF(returnSentenceNGramMax(input$sentence, input$corpus == "2"))
+          res$list<<-a
           return(a)
       })
     
-    output$triGram <- renderText({returnSentenceNGramMax(input$sentence)})
+    output$triGram <- renderText({returnSentenceNGramMax(input$sentence, input$corpus == "2")})
 
     output$button_1_4 <- renderUI({
       lapply(1:4, function(i) {
@@ -165,47 +173,15 @@ shinyServer(
     observeEvent(input[[paste("b_",6,sep="")]], {updateTextInput(session, "sentence", value = paste(input[["sentence"]],res$list[6]))})
     observeEvent(input[[paste("b_",7,sep="")]], {updateTextInput(session, "sentence", value = paste(input[["sentence"]],res$list[7]))})
     observeEvent(input[[paste("b_",8,sep="")]], {updateTextInput(session, "sentence", value = paste(input[["sentence"]],res$list[8]))})
+  
     
-    observeEvent(input$corpus,{
-        if (res$cleanStopWord == FALSE){
-          withProgress(message = 'LOAD NO STOPWORD CORPUS', value = 0,
-                       { wFinal <- readRDS('./www/wFinal_noStopWords.RDs') 
-                       incProgress(1,detail = "OK")
-                       })
-        }
-        else{
-          withProgress(message = 'LOAD STOPWORD CORPUS', value = 0,
-                       { wFinal <- readRDS('./www/wFinal_StopWords.RDs') 
-                       incProgress(1,detail = "OK")
-                       })
-        }
-    })
+    observe({res$list<-predictBackOFF(returnSentenceNGramMax(input$sentence,
+                                                             input$corpus == "2")) })
     
-    observe({res$cleanStopWord <- (input$corpus == "2")
-             res$list<-predictBackOFF(returnSentenceNGramMax(input$sentence))
-    })
-    
-    res <- reactiveValues(list=c('-','-' ,'-', '-','-','-','-','-'),
-                          cleanStopWord=FALSE)
+    res <- reactiveValues(list=c('-','-' ,'-', '-','-','-','-','-'))
 
 })
 
 #can i know just
 #avec : i know just   : how/the/what/in/a/to/like
 #sans : can know just : case/dont/like/much/want/one/thought
-
-
-#res <- reactiveValues(list=c('-','-' ,'-', '-','-','-','-','-'))
-
-# if (res$cleanStopWord == TRUE){
-#   withProgress(message = 'LOAD NO STOPWORD CORPUS', value = 0,
-#                { wFinal <- readRDS('./www/wFinal_noStopWords.RDs') 
-#                incProgress(1,detail = "OK")
-#                })
-# }
-# else{
-#   withProgress(message = 'LOAD STOPWORD CORPUS', value = 0,
-#                { wFinal <- readRDS('./www/wFinal_StopWords.RDs') 
-#                incProgress(1,detail = "OK")
-#                })
-# }
