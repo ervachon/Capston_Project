@@ -1,18 +1,31 @@
 #load(url("https://github.com//ervachon//Capston_Project//raw//gh-pages//data.shiny//wFinal_StopWords.RData"))
 #load(url("https://github.com//ervachon//Capston_Project//raw//gh-pages//data.shiny//wFinal_noStopWords.RData"))
-suppressPackageStartupMessages(library(shiny))
-suppressPackageStartupMessages(library(rJava))
-suppressPackageStartupMessages(library(NLP))
-suppressPackageStartupMessages(library(RWeka))
-suppressPackageStartupMessages(library(tm))
-suppressPackageStartupMessages(library(data.table))
-suppressPackageStartupMessages(library(slam))
+
+#suppressPackageStartupMessages(library(rJava))
+#suppressPackageStartupMessages(library(NLP))
+#suppressPackageStartupMessages(library(RWeka))
+#suppressPackageStartupMessages(library(data.table))
+#suppressPackageStartupMessages(library(slam))
+
 
 nbGram <- 4
 nbRes <- 8
 nbResAnalyse <- nbRes
 
-SelectData <- function(clean){
+SelectData.new <- function(clean){
+  show("myText")
+  if (clean == TRUE) {
+        data <- readRDS('./www/wFinal_noStopWords.RDs')
+        #data <- readRDS(getURL('https://github.com/ervachon/Capston_Project/raw/gh-pages/data.shiny/wFinal_noStopWords.RDs',ssl.verifypeer=0L, followlocation=1L)))
+  } else {
+        data <- readRDS('./www/wFinal_StopWords.RDs')
+        #data <- readRDS(url('https://github.com/ervachon/Capston_Project/raw/gh-pages/data.shiny/wFinal_StopWords.RDs')) 
+  }
+  hide("myText")
+  return(data)
+}
+
+SelectData.old <- function(clean){
   if (clean == TRUE) {
     withProgress(message = paste('##################################',
                                  'LOAD NO STOPWORD CORPUS',
@@ -33,8 +46,18 @@ SelectData <- function(clean){
   return(data)
 }
 
+myLoad <- function(URL) {
+  rds <- tryCatch( {read.csv(text=getURL(URL,ssl.verifypeer=0L, followlocation=1L),sep=';')},
+                   error=function(cond) {return(read.csv(URL,sep=';'))})    
+  return(rds)
+}
+
+
 shinyServer(
-  function(input, output,session) {    
+  function(input, output,session) { 
+    
+    # output$myText <- renderText({"WAIT IT IS LOADING !!!"})
+    
     returnSentenceNGramMax <- function(laPhrase,clean) {
       return(returnSentence(laPhrase,nbGram-1,clean))
     }
@@ -139,7 +162,7 @@ shinyServer(
       return(tmp)
     }
     
-    wFinal <- reactive({SelectData(input$corpus == "2")})
+    wFinal <- reactive({SelectData.new(input$corpus == "2")})
     
     output$predict <- renderText({
           a <- predictBackOFF(returnSentenceNGramMax(input$sentence, input$corpus == "2"))
@@ -164,6 +187,7 @@ shinyServer(
                      width = '24%')
       })
     })
+    hide("myText")
     
     observeEvent(input[[paste("b_",1,sep="")]], {updateTextInput(session, "sentence", value = paste(input[["sentence"]],res$list[1]))})
     observeEvent(input[[paste("b_",2,sep="")]], {updateTextInput(session, "sentence", value = paste(input[["sentence"]],res$list[2]))})
@@ -174,7 +198,6 @@ shinyServer(
     observeEvent(input[[paste("b_",7,sep="")]], {updateTextInput(session, "sentence", value = paste(input[["sentence"]],res$list[7]))})
     observeEvent(input[[paste("b_",8,sep="")]], {updateTextInput(session, "sentence", value = paste(input[["sentence"]],res$list[8]))})
   
-    
     observe({res$list<-predictBackOFF(returnSentenceNGramMax(input$sentence,
                                                              input$corpus == "2")) })
     

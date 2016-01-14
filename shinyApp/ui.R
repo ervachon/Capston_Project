@@ -4,19 +4,23 @@
 # library(shiny)
 # library(shinyapps)
 
-# setwd("D:\\_GIT_\\Capston_Project\\shinyApp")
-# runApp() 
-# Sys.setlocale("LC_ALL","English")
-# shinyapps::deployApp('D:\\_GIT_\\Capston_Project\\shinyApp',appName = "Capston_Project")
+#setwd("D:\\_GIT_\\Capston_Project\\shinyApp")
+#runApp() 
+#Sys.setlocale("LC_ALL","English")
+#shinyapps::deployApp('D:\\_GIT_\\Capston_Project\\shinyApp',appName = "Capston_Project")
 
-library(shiny)
+  
+suppressPackageStartupMessages(library(shiny))
+suppressPackageStartupMessages(library(tm))
+suppressPackageStartupMessages(library(shinyjs))
+suppressPackageStartupMessages(library(RCurl))
 
 shinyUI(pageWithSidebar(
    headerPanel(HTML('Capston Project : PredictORama <h3>Eric VACHON - January 2016')),
    sidebarPanel( #width = 12,
       tabPanel("Common",
       radioButtons("corpus",
-                   label =h4("Choice your corpus"),
+                   label = h4("Choice your corpus"),
                    choices = list("With Stop Words"= 1,
                                   "Without Stop Words" = 2),
                    selected = 1
@@ -27,12 +31,16 @@ shinyUI(pageWithSidebar(
    mainPanel(#width = 12,
       tabsetPanel(
         tabPanel("PredictORama", 
+                 
+                 useShinyjs(),
+                 tags$head(tags$style("#myText{color: red}")),
+                 #h4(textOutput("myText")), 
+                 h4(div(id = "myText", "Wait CORPUS is loading !!!")),
+        
                  textInput("sentence", label = h4("Enter your sentence bellow:"), 
                            value='',width = '100%'), 
-                 
-#                  verbatimTextOutput("triGram"),
-#                  verbatimTextOutput("predict"),
-                 
+#                 verbatimTextOutput("triGram"),
+#                 verbatimTextOutput("predict"),
                  fluidRow(#column(width=3,actionButton("res1", label="Top 1",width = '100%')),
                           uiOutput("button_1_4")
                           ),br(),
