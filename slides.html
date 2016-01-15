@@ -91,9 +91,9 @@ aside.gdbar img {
 
 <p><br>
 The aim of this project is to use three datasets from  <a href="https://d396qusza40orc.cloudfront.net/dsscapstone/dataset/Coursera-SwiftKey.zip">SwiftKey</a> to create a algorithm to predict the next word of a sentence. 
-For exemple, if we give to the algorithm : &quot;i love&quot; may be if we train the algorithm with love letters, it will give us for exemple the next word : &quot;you&quot;.</p>
+For exemple, if we give to the algorithm : &quot;i love&quot; and if we train the algorithm with love letters, it may give us the next word : &quot;you&quot;.</p>
 
-<p>To realize this, we create two clean data sets of <a href="https://en.wikipedia.org/wiki/N-gram">1-gram, 2-gram, 3-gram and 4-gram</a> : one with <a href="https://en.wikipedia.org/wiki/Stop_words">stop words</a> and another without. The shiny app provide to compare results between this two data sets (with and without stop words).  </p>
+<p>To realize this, we create two clean data sets of <a href="https://en.wikipedia.org/wiki/N-gram">1-gram, 2-gram, 3-gram and 4-gram</a> : one with <a href="https://en.wikipedia.org/wiki/Stop_words">stop words</a> and another without. <a href="https://ervachon.shinyapps.io/Capston_Project">The Shiny App</a> provide to compare results between this two data sets (with and without stop words).  </p>
 
 <p>NB: a n-gram is a (n-1)-gram + 1-gram.   </p>
 
@@ -112,17 +112,17 @@ For exemple, if we give to the algorithm : &quot;i love&quot; may be if we train
 
 <p>The first step of this work is to clean data :<br>
 1. we change the case of the text to lower<br>
-2. we remove punctuation, numbers, stopwords  and multiple whitespace.<br>
+2. we remove punctuation, numbers, stopwords (or not)  and multiple whitespace.<br>
 We optimize the time of gramization by using the R libraries <a href="https://stat.ethz.ch/R-manual/R-devel/library/parallel/doc/parallel.pdf">parallel</a>, <a href="https://cran.r-project.org/web/packages/doParallel/index.html">doParallel</a> and <a href="https://cran.r-project.org/web/packages/foreach/index.html">foreach</a>.</p>
 
 <h3><u>Prediction</u></h3>
 
 <ol>
-<li>apply to the user sentence the same transformation as the corpus creation</li>
-<li>take the 3 last words of the sentence</li>
-<li>find this 3-gram as the 3 begining words on the 4-gram corpus</li>
-<li>if find all 4-gram (max 7 res)and add them into result set</li>
-<li>repeat 2. to 6 with 3-gram and 2-gram until 7 results find or all corpus analysed</li>
+<li>apply to the user sentence the same transformation as the corpus creation,</li>
+<li>take the 3 last words of the sentence,</li>
+<li>find this 3-gram as the 3 begining words on the 4-gram corpus,</li>
+<li>if find all 4-gram (max 7 res)and add them into result set,</li>
+<li>repeat 2. to 6 with 3-gram and 2-gram until 7 results find or all corpus analysed.</li>
 </ol>
 
   </article>
@@ -134,13 +134,12 @@ We optimize the time of gramization by using the R libraries <a href="https://st
     <h2>PredictORama : Shiny app</h2>
   </hgroup>
   <article data-timings="">
-    <p><img src="./assets/img/PredictORama2.png" alt=""><br>
-First you choice on the left which corpus you want to use : with or without stop words.<br>
-Next simply write a sentence on the &quot;sentence&quot; box and wait a little the eight buttons on the bottom will have their label update by the eight best predict words. If you click on a button you add the word to your sentence and you can repeat if you want. </p>
+    <p><a href="https://ervachon.shinyapps.io/Capston_Project"><img src="./assets/img/PredictORama2.png" alt=""></a>
+First you choice on the sidebarPanel which corpus you want to use: with or without stop words. <strong>WAIT</strong> a few seconds until <font color="red"><strong>&quot;Wait CORPUS is loading&quot;</strong></font> is gone. Next write a sentence on the &quot;sentence&quot; box and wait until the eight buttons labels are update with the best predict words. Then you can click on a button to add the word at the end of your sentence. </p>
 
 <h3><u>Memory optimisation</u></h3>
 
-<p>To optimize the memory of <a href="https://ervachon.shinyapps.io/Capston_Project">The Shiny App</a>, we truncate the n-gram corpus:  we select only 1-gram with minimum 2 occurences, 2-gram with 4, 3-gram with 5 and 4-gram with 5.</p>
+<p>To optimize the memory of <a href="https://ervachon.shinyapps.io/Capston_Project">The Shiny App</a>, we truncate the n-gram corpus, for example  we select only 2-gram with minimum 4 occurences.</p>
 
   </article>
   <!-- Presenter Notes -->
@@ -154,10 +153,10 @@ Next simply write a sentence on the &quot;sentence&quot; box and wait a little t
     <p>The are a lot&#39;s of perspectives with this study, for example :  </p>
 
 <ul>
-<li>using more algorithms to predict like linear interpolation, smoothing (good turing, ...) </li>
+<li>tryiong more predict algorithms like linear interpolation, smoothing (good turing, ...) </li>
 <li>learn from user sentences and save into corpus<br></li>
 <li>use more corpus to enhance our n-gram corpus<br></li>
-<li>use a hadoop cluster to spend less time to gramimzation (instead of using R parallelisation)<br></li>
+<li>use a hadoop cluster to spend less time to gramization (instead of using R parallelisation)<br></li>
 <li>use the complete n-gram corpus and not truncate one (cause of shiny memory optimization)</li>
 <li>and many more ...</li>
 </ul>

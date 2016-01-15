@@ -1,32 +1,28 @@
 #load(url("https://github.com//ervachon//Capston_Project//raw//gh-pages//data.shiny//wFinal_StopWords.RData"))
 #load(url("https://github.com//ervachon//Capston_Project//raw//gh-pages//data.shiny//wFinal_noStopWords.RData"))
 
-#suppressPackageStartupMessages(library(rJava))
-#suppressPackageStartupMessages(library(NLP))
-#suppressPackageStartupMessages(library(RWeka))
-#suppressPackageStartupMessages(library(data.table))
-#suppressPackageStartupMessages(library(slam))
+#can i know just
+#avec : i know just   : how/the/what/in/a/to/like
+#sans : can know just : case/dont/like/much/want/one/thought
 
 
 nbGram <- 4
 nbRes <- 8
 nbResAnalyse <- nbRes
 
-SelectData.new <- function(clean){
+SelectData.new <- function(noClean){
   show("myText")
-  if (clean == TRUE) {
+  if (noClean == FALSE) {
         data <- readRDS('./www/wFinal_noStopWords.RDs')
-        #data <- readRDS(getURL('https://github.com/ervachon/Capston_Project/raw/gh-pages/data.shiny/wFinal_noStopWords.RDs',ssl.verifypeer=0L, followlocation=1L)))
   } else {
         data <- readRDS('./www/wFinal_StopWords.RDs')
-        #data <- readRDS(url('https://github.com/ervachon/Capston_Project/raw/gh-pages/data.shiny/wFinal_StopWords.RDs')) 
   }
   hide("myText")
   return(data)
 }
 
-SelectData.old <- function(clean){
-  if (clean == TRUE) {
+SelectData.old <- function(noClean){
+  if (noClean == FALSE) {
     withProgress(message = paste('##################################',
                                  'LOAD NO STOPWORD CORPUS',
                                  '##################################'), 
@@ -55,8 +51,6 @@ myLoad <- function(URL) {
 
 shinyServer(
   function(input, output,session) { 
-    
-    # output$myText <- renderText({"WAIT IT IS LOADING !!!"})
     
     returnSentenceNGramMax <- function(laPhrase,clean) {
       return(returnSentence(laPhrase,nbGram-1,clean))
@@ -205,6 +199,3 @@ shinyServer(
 
 })
 
-#can i know just
-#avec : i know just   : how/the/what/in/a/to/like
-#sans : can know just : case/dont/like/much/want/one/thought

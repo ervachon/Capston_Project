@@ -9,7 +9,12 @@
 #Sys.setlocale("LC_ALL","English")
 #shinyapps::deployApp('D:\\_GIT_\\Capston_Project\\shinyApp',appName = "Capston_Project")
 
-  
+#suppressPackageStartupMessages(library(rJava))
+#suppressPackageStartupMessages(library(NLP))
+#suppressPackageStartupMessages(library(RWeka))
+#suppressPackageStartupMessages(library(data.table))
+#suppressPackageStartupMessages(library(slam))
+
 suppressPackageStartupMessages(library(shiny))
 suppressPackageStartupMessages(library(tm))
 suppressPackageStartupMessages(library(shinyjs))
