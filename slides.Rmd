@@ -83,7 +83,7 @@ We optimize the time of gramization by using the R libraries [parallel](https://
 First you choice on the sidebarPanel which corpus you want to use: with or without stop words. **WAIT** a few seconds until <font color="red">**"Wait CORPUS is loading"**</font> is gone. Next write a sentence on the "sentence" box and wait until the eight buttons labels are update with the best predict words. Then you can click on a button to add the word at the end of your sentence. 
 
 ### <u>Memory optimisation</u>
-To optimize the memory of [The Shiny App](https://ervachon.shinyapps.io/Capston_Project), we truncate the n-gram corpus, for example  we select only 2-gram with minimum 4 occurences.
+To optimize the memory of [The Shiny App](https://ervachon.shinyapps.io/Capston_Project), we truncate the n-gram corpus, for example  we select only 3-gram with minimum 5 occurences.
 
 --- .class #id  
 
