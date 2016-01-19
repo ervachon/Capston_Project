@@ -43,7 +43,7 @@ shinyUI(pageWithSidebar(
                  #h4(textOutput("myText")), 
                  h4(div(id = "myText", "Wait CORPUS is loading !!!")),
         
-                 textInput("sentence", label = h4("Enter your sentence bellow:"), 
+                 textInput("sentence", label = h4("Enter your phrase bellow:"), 
                            value='',width = '100%'), 
                  #verbatimTextOutput("triGram"),
                  #verbatimTextOutput("predict"),

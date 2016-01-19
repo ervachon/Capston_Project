@@ -52,7 +52,7 @@ aside.gdbar img {
 
 ## PredictORama : Overview
 <br>
-The aim of this project is to use three datasets from  [SwiftKey](https://d396qusza40orc.cloudfront.net/dsscapstone/dataset/Coursera-SwiftKey.zip) to create a algorithm to predict the next word of a sentence. 
+The aim of this project is to use three datasets from  [SwiftKey](https://d396qusza40orc.cloudfront.net/dsscapstone/dataset/Coursera-SwiftKey.zip) to create a algorithm to predict the next word of a phrase. 
 For exemple, if we give to the algorithm : "i love" and if we train the algorithm with love letters, it may give us the next word : "you".
 
 To realize this, we create two clean data sets of [1-gram, 2-gram, 3-gram and 4-gram] (https://en.wikipedia.org/wiki/N-gram) : one with [stop words] (https://en.wikipedia.org/wiki/Stop_words) and another without. [The Shiny App](https://ervachon.shinyapps.io/Capston_Project) provide to compare results between this two data sets (with and without stop words).  
@@ -71,8 +71,8 @@ The first step of this work is to clean data :
 We optimize the time of gramization by using the R libraries [parallel](https://stat.ethz.ch/R-manual/R-devel/library/parallel/doc/parallel.pdf), [doParallel](https://cran.r-project.org/web/packages/doParallel/index.html) and [foreach](https://cran.r-project.org/web/packages/foreach/index.html).
 
 ### <u>Prediction</u>
-1. apply to the user sentence the same transformation as the corpus creation,
-2. take the 3 last words of the sentence,
+1. apply to the user phrase the same transformation as the corpus creation,
+2. take the 3 last words of the phrase,
 3. find this 3-gram as the 3 begining words on the 4-gram corpus,
 4. if find all 4-gram (max 7 res)and add them into result set,
 5. repeat 2. to 6 with 3-gram and 2-gram until 7 results find or all corpus analysed.
@@ -80,7 +80,7 @@ We optimize the time of gramization by using the R libraries [parallel](https://
 --- .class #id 
 ##  PredictORama : Shiny app
 [![](./assets/img/PredictORama2.png)](https://ervachon.shinyapps.io/Capston_Project)
-First you choice on the sidebarPanel which corpus you want to use: with or without stop words. **WAIT** a few seconds until <font color="red">**"Wait CORPUS is loading"**</font> is gone. Next write a sentence on the "sentence" box and wait until the eight buttons labels are update with the best predict words. Then you can click on a button to add the word at the end of your sentence. 
+First you choice on the sidebarPanel which corpus you want to use: with or without stop words. **WAIT** a few seconds until <font color="red">**"Wait CORPUS is loading"**</font> is gone. Next write a phrase on the "phrase" textbox and wait until the eight buttons labels are update with the best predict words. Then you can click on a button to add the word at the end of your phrase. 
 
 ### <u>Memory optimisation</u>
 To optimize the memory of [The Shiny App](https://ervachon.shinyapps.io/Capston_Project), we truncate the n-gram corpus, for example  we select only 3-gram with minimum 5 occurences.
@@ -91,7 +91,7 @@ To optimize the memory of [The Shiny App](https://ervachon.shinyapps.io/Capston_
 
 The are a lot's of perspectives with this study, for example :  
 * tryiong more predict algorithms like linear interpolation, smoothing (good turing, ...) 
-* learn from user sentences and save into corpus  
+* learn from user phrases and save into corpus  
 * use more corpus to enhance our n-gram corpus  
 * use a hadoop cluster to spend less time to gramization (instead of using R parallelisation)  
 * use the complete n-gram corpus and not truncate one (cause of shiny memory optimization)
