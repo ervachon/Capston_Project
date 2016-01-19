@@ -8,7 +8,7 @@ scriptName = "PredictORama_10_predict.R"
 # load common script
 source("PredictORama_00_common.R")
 
-#load(paste(directoryDataFinal,"wFinal_",paste(minOcc, collapse = ''),".RData",sep=""))  
+wFinal <- readRDS(paste(directoryDataFinal,"wFinal_",paste(minOcc, collapse = ''),".RDs",sep=""))  
 
 ######################################################################################
 returnSentenceNGramMax <- function(laPhrase) {
@@ -69,8 +69,7 @@ returnCountNgramCorpus <- function(theNGram){
 
 returnListNGramOfNgramLessOne <- function(theNgram){
   n <- returnNbGram(theNgram)
-  listTmp <- wFinal[[n+1]][[1]][grep(paste("^",theNgram," ",sep=""),
-                                     wFinal[[n+1]][[1]]$terms), ] 
+  listTmp <- wFinal[[n+1]][[1]][grep(paste("^",theNgram," ",sep=""),wFinal[[n+1]][[1]]$terms), ] 
   tmp <- c()
   if (nrow(listTmp)>0){tmp <-listTmp[1:min(nbResAnalyse,nrow(listTmp)),]}
   return(tmp)
@@ -97,18 +96,28 @@ predictBackOFF <- function(theSentence){
   }
   res <- predictMLE(theSentence[1])
   i <- 2
-  #while(is.null(res)==TRUE & i < nbGram ){
   while(length(res)<=nbRes & i < nbGram ){
     resTmp <- predictMLE(listSentence[[i]])
     if (length(resTmp)>0){
       for (j in 1:length(resTmp)){
-         if ((resTmp[j] %in% res)==FALSE){res <- c(res,resTmp[j])}
+        if ((resTmp[j] %in% res)==FALSE){res <- c(res,resTmp[j])}
       }
     }
     i<-i+1
   }
+  
+  i<-1
+  while (length(res) < nbRes){
+    if ((wFinal()[[1]][[1]]$terms[i] %in% res)== FALSE){
+      res <- c(res,wFinal()[[1]][[1]]$terms[i])}
+    i <- i + 1
+  }
+  
+  if (theSentence==""){res <- c('-','-' ,'-', '-','-','-','-','-')}
+  
   return(res[1:(min(nbRes,length(res)))])
 }
+
 
 ####################################################################################################
 
@@ -152,3 +161,6 @@ predictGT <- function(theSentence){
 
 # freq de this dans 1gram
 # wFinal[[nGram]][[1]]$freq[match("this", wFinal[[1]][[1]]$terms[])]
+
+print(predictBackOFF(returnSentenceNGramMax("i am the master of the")))
+print(returnListNGramOfNgramLessOne("master of the"))

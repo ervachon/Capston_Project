@@ -1,5 +1,4 @@
 #############################################################
-#
 # source("http://bioconductor.org/biocLite.R")
 # biocLite("Rgraphviz")
 # install.packages("tm")
@@ -14,18 +13,18 @@
 # install.packages("foreach")
 # install.packages("doParallel")
 #
-# attention 64bit : jre 64bit too 
-# => in c:\\programmes a  and not in  x86
-# 
+# attention 64bit : jre 64bit too => in c:\\programmes a  and not in  x86
 #############################################################
-#
-# setwd('D:\\_GIT_\\Capston_Project\\')
-#
-#############################################################
+#   optimize size of dump
+#minOcc <- c(2,2,2,2)
+#minOcc <- c(1,3,4,4)
+#minOcc <- c(1,4,5,5)
+minOcc <- c(100,5,5,5)
+#minOcc <- c(5,5,5,5)
 
 # clean stop words
-cleanStopWord <- TRUE
-#cleanStopWord <- FALSE
+#cleanStopWord <- TRUE
+cleanStopWord <- FALSE
 
 # type of data
 returnTypeData <- function(){
@@ -72,13 +71,8 @@ nbGram <- 4
 # # of line to load
 nbLinesLoad<-200000
 
-#   optimize size of dump
-#minOcc <- c(2,5,7,9)
-minOcc <- c(1,4,5,5)
-#minOcc <- c(1,3,4,4)
-
 # # of res
-nbRes <- 7
+nbRes <- 8
 
 # # of top res to analyse
 nbResAnalyse <- nbRes

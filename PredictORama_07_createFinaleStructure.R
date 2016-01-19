@@ -24,7 +24,7 @@ for (i in 1:nbGram){
   wTmp[[2]] <- freqCount
   wFinal[[i]] <- wTmp
 }
-save(wFinal,file=paste(directoryDataFinal,"wFinal_",paste(minOcc, collapse = ''),".RData",sep=""))  
+#save(wFinal,file=paste(directoryDataFinal,"wFinal_",paste(minOcc, collapse = ''),".RData",sep=""))  
 saveRDS(wFinal,file=paste(directoryDataFinal,"wFinal_",paste(minOcc, collapse = ''),".RDs",sep=""))  
 
 # end main ##########################################################################

@@ -90,7 +90,7 @@ aside.gdbar img {
 <h2>PredictORama : Overview</h2>
 
 <p><br>
-The aim of this project is to use three datasets from  <a href="https://d396qusza40orc.cloudfront.net/dsscapstone/dataset/Coursera-SwiftKey.zip">SwiftKey</a> to create a algorithm to predict the next word of a sentence. 
+The aim of this project is to use three datasets from  <a href="https://d396qusza40orc.cloudfront.net/dsscapstone/dataset/Coursera-SwiftKey.zip">SwiftKey</a> to create a algorithm to predict the next word of a phrase. 
 For exemple, if we give to the algorithm : &quot;i love&quot; and if we train the algorithm with love letters, it may give us the next word : &quot;you&quot;.</p>
 
 <p>To realize this, we create two clean data sets of <a href="https://en.wikipedia.org/wiki/N-gram">1-gram, 2-gram, 3-gram and 4-gram</a> : one with <a href="https://en.wikipedia.org/wiki/Stop_words">stop words</a> and another without. <a href="https://ervachon.shinyapps.io/Capston_Project">The Shiny App</a> provide to compare results between this two data sets (with and without stop words).  </p>
@@ -118,8 +118,8 @@ We optimize the time of gramization by using the R libraries <a href="https://st
 <h3><u>Prediction</u></h3>
 
 <ol>
-<li>apply to the user sentence the same transformation as the corpus creation,</li>
-<li>take the 3 last words of the sentence,</li>
+<li>apply to the user phrase the same transformation as the corpus creation,</li>
+<li>take the 3 last words of the phrase,</li>
 <li>find this 3-gram as the 3 begining words on the 4-gram corpus,</li>
 <li>if find all 4-gram (max 7 res)and add them into result set,</li>
 <li>repeat 2. to 6 with 3-gram and 2-gram until 7 results find or all corpus analysed.</li>
@@ -135,7 +135,7 @@ We optimize the time of gramization by using the R libraries <a href="https://st
   </hgroup>
   <article data-timings="">
     <p><a href="https://ervachon.shinyapps.io/Capston_Project"><img src="./assets/img/PredictORama2.png" alt=""></a>
-First you choice on the sidebarPanel which corpus you want to use: with or without stop words. <strong>WAIT</strong> a few seconds until <font color="red"><strong>&quot;Wait CORPUS is loading&quot;</strong></font> is gone. Next write a sentence on the &quot;sentence&quot; box and wait until the eight buttons labels are update with the best predict words. Then you can click on a button to add the word at the end of your sentence. </p>
+First you choice on the sidebarPanel which corpus you want to use: with or without stop words. <strong>WAIT</strong> a few seconds until <font color="red"><strong>&quot;Wait CORPUS is loading&quot;</strong></font> is gone. Next write a phrase on the &quot;phrase&quot; textbox and wait until the eight buttons labels are update with the best predict words. Then you can click on a button to add the word at the end of your phrase. </p>
 
 <h3><u>Memory optimisation</u></h3>
 
@@ -154,7 +154,7 @@ First you choice on the sidebarPanel which corpus you want to use: with or witho
 
 <ul>
 <li>tryiong more predict algorithms like linear interpolation, smoothing (good turing, ...) </li>
-<li>learn from user sentences and save into corpus<br></li>
+<li>learn from user phrases and save into corpus<br></li>
 <li>use more corpus to enhance our n-gram corpus<br></li>
 <li>use a hadoop cluster to spend less time to gramization (instead of using R parallelisation)<br></li>
 <li>use the complete n-gram corpus and not truncate one (cause of shiny memory optimization)</li>
